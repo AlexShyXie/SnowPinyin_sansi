@@ -2,6 +2,7 @@
 # 由 snow_backup/snow_sanpin.fixed.txt 按小鹤键位重新生成
 # 声母：zh/ch/sh 并入 z/c/s，零声母用 v；韵母用小鹤韵码
 # 原表的「630」段是手工指定的短码，无统一规则，未迁移
+# 一/二简的次选字按小鹤音形「二重简码」补齐（原码不沿用，按本方案键位重编）
 
 # 单字
 b	不 吧
@@ -12,36 +13,36 @@ bj	办
 bk	并
 bd	白
 bu	部
-bi	比
+bi	比 逼
 bo	拨
 bm	变
-bf	本
+bf	本 笨
 bh	帮
-bg	蹦
+bg	蹦 甭
 ba	把
-bw	被
-bc	报
-c	才
+bw	被 背
+bc	报 宝
+c	才 初 此
 cv	催
-cz	抽
-ce	车
+cz	抽 臭
+ce	车 扯
 cj	产
-cd	菜
+cd	菜 猜
 cu	出
 ci	吃
 co	错
 cf	陈
 ch	长
-cg	成
+cg	成 程
 ca	擦
 cr	穿
 cy	存
 cs	从
 cc	超
-d	的
+d	的 打
 dv	对
 dn	掉
-dz	都
+dz	都 逗
 de	得
 dj	但
 dk	定
@@ -53,56 +54,56 @@ dm	点
 dh	当
 dq	丢
 dg	等
-da	大
+da	大 达
 dr	短
 dy	顿
 ds	动
-dc	到
-s	是
+dc	到 道
+s	是 时 随
 sv	水
-sz	收
-se	色
+sz	收 守
+se	色 涩
 sj	山
 sk	帅
 sd	晒
 su	数
-si	时
+si	时 室 寺
 so	说
 sl	双
 sf	神
 sh	上
 sx	刷
-sg	生
+sg	生 省
 sa	啥
 sr	算
 sw	谁
 sc	少
-z	在
+z	在 子 之
 zv	最
-zz	走
-ze	着
+zz	走 揍
+ze	着 遮
 fj	反
-fu	服
+fu	服 复
 zi	字
-zo	做
+zo	做 坐
 zl	装
-ff	分
+ff	分 份
 fh	放
 zx	抓
-fg	风
+fg	风 疯
 fa	发
 zr	转
 fw	飞
-zs	中
-zc	找
-g	个
+zs	中 终
+zc	找 遭
+g	个 管
 gv	规
 gz	够
-ge	各
+ge	各 哥
 gj	干
 gk	乖
-gd	该
-gu	古
+gd	该 钙
+gu	古 故
 go	过
 gl	光
 gf	跟
@@ -110,47 +111,47 @@ gh	刚
 gx	挂
 gg	更
 ga	嘎
-gr	关
+gr	关 官
 gw	给
 gs	共
-gc	高
-h	和
+gc	高 搞
+h	和 化
 hv	会
 hz	后
 he	合
 hj	汉
 hk	坏
 hd	还
-hu	胡
+hu	胡 壶
 ho	或
 hl	黄
 hf	很
-xk	行
-hx	话
+xk	行 型
+hx	话 华
 hg	横
 ha	哈
 hr	换
 hw	黑
 hs	红
 hc	好
-j	就
-jb	进
+j	就 见
+jb	进 今
 jn	叫
 jp	接
 jk	经
 jt	决
-ji	即
+ji	即 极
 jv	局
-jm	间
+jm	间 贱
 jq	久
-jx	加
+jx	加 佳
 jr	卷
 jy	均
 jl	将
 js	囧
-k	可
+k	可 块
 kv	亏
-kz	口
+kz	口 抠
 ke	克
 kj	看
 kk	快
@@ -167,7 +168,7 @@ kr	宽
 ky	困
 ks	空
 kc	靠
-l	了
+l	了 立
 lb	林
 ln	聊
 lz	楼
@@ -180,7 +181,7 @@ li	里
 lo	落
 lm	连
 lh	浪
-lq	刘
+lq	刘 溜
 lg	冷
 la	拉
 lr	乱
@@ -188,7 +189,7 @@ lw	类
 ll	两
 ls	龙
 lc	老
-m	没
+m	没 嘛
 mb	民
 mn	秒
 mz	某
@@ -204,10 +205,10 @@ mf	们
 mh	忙
 mq	谬
 mg	梦
-ma	吗
-mw	每
+ma	吗 骂
+mw	每 美
 mc	毛
-n	你
+n	你 哪
 nb	您
 nn	鸟
 np	捏
@@ -226,7 +227,7 @@ na	那
 nr	暖
 nw	内
 nl	娘
-ns	弄
+ns	弄 浓
 nc	闹
 p	平
 pb	品
@@ -245,45 +246,45 @@ pg	碰
 pa	怕
 pw	配
 pc	跑
-q	去
+q	去 期
 qb	亲
 qn	桥
 qp	且
 zj	占
 qk	请
-qt	却
+qt	却 缺
 zu	组
-qi	起
+qi	起 弃
 qv	区
 qm	前
 zf	真
 zh	张
 qq	求
-zg	正
+zg	正 症
 qx	恰
 qr	全
 qy	群
 ql	强
 qs	穷
-r	人
+r	人 入
 rv	瑞
 rz	肉
-re	热
+re	热 惹
 rj	然
 ru	如
 ri	日
 ro	若
-rf	任
+rf	任 忍
 rh	让
-rg	仍
+rg	仍 扔
 rr	软
 ry	润
 rs	容
 rc	绕
 sy	孙
 ss	送
-t	他
-tv	推
+t	他 它
+tv	推 退
 tn	条
 tz	头
 te	特
@@ -291,29 +292,29 @@ tj	谈
 tk	听
 td	太
 tu	图
-ti	体
+ti	体 替
 to	托
-tm	天
+tm	天 舔
 th	唐
 tg	腾
 ta	她
 tr	团
 ty	吞
-ts	同
-tc	陶
-w	我
-wj	完
+ts	同 通
+tc	陶 淘
+w	我 位
+wj	完 玩
 ck	揣
 wd	外
 wu	无
 wo	握
 cl	床
-wf	问
-wh	望
+wf	问 文
+wh	望 忘
 wg	翁
-ww	为
-v	而
-xb	新
+ww	为 未
+v	而 嗯 按
+xb	新 心
 xn	小
 xp	些
 ve	额
@@ -330,20 +331,20 @@ xx	下
 xr	选
 xy	寻
 xl	想
-xs	熊
+xs	熊 凶
 vc	奥
-y	一 1
+y	一 1 又
 yb	因
-yz	有
-ye	也
-yj	眼
+yz	有 友
+ye	也 野
+yj	眼 严
 yk	应
 yt	月
 yi	以
 yv	与
-yh	样
+yh	样 杨
 ya	压
-yr	元
+yr	元 园
 yy	云
 ys	用
 yc	要
@@ -352,7 +353,9 @@ za	咋
 zw	贼
 
 f	发
-x	小
+x	小 性
+# 一/二简次选字已按小鹤音形补齐（键位重编：zh->z ch->c sh->s 零声母->v），见文件头说明
+
 # 二简词
 bs	表示
 bq	并且
@@ -1180,1951 +1183,10 @@ zzr	走人
 zzw	走完
 zzz	走着
 # 三简词（三字）：声声声，取自小鹤音形三码表（原码不沿用，按本方案键位重编）
-bbc	办不成
-bbh	并不会
-bbk	不包括
-bbn	并不能
-bbq	北半球
-bbs	并不是
-bbt	棒棒糖
-bbx	并不想
-bby	不必要 不便宜
-bbz	八宝粥 半辈子
-bdc	不动产
-bdd	不单单
-bdl	不得了
-bds	不打算
-bdz	别当真
-bfh	百分号
-bfs	比方说
-bfz	不负责
-bgd	不敢当
-bgm	帮个忙
-bgy	半个月
-bgz	半个钟
-bhb	不会吧
-bhg	不合格
-bhh	白花花
-bhq	不回去
-bjn	比基尼
-bkl	不考虑
-bkn	不可能
-bkx	不开心
-blb	玻璃杯
-blc	碧螺春 不理睬
-bld	便利店
-blf	别浪费
-blg	板蓝根
-blh	博览会
-blj	不了解
-blk	不离开
-bll	不聊了
-blm	爆冷门
-blp	舶来品
-blq	保龄球
-bls	不利索
-blt	柏拉图
-blx	不理想
-bly	不利于
-blz	避雷针
-bmn	本命年
-bnf	不耐烦
-bnl	别闹了
-bph	不平衡
-bqc	不清楚
-bqd	不确定
-bqj	白切鸡
-bql	冰淇淋
-bqr	不求人
-bqt	包青天
-brd	不认得
-brm	白日梦
-brn	不然呢
-brq	哺乳期
-brs	不认识
-bry	不容易
-bsb	不是吧
-bsc	办事处
-bsl	变色龙
-bss	不算数
-bsw	波斯湾
-bsx	不死心
-btc	不提倡
-btd	不太懂
-btf	白头发
-btg	不太敢
-bth	不太好
-btj	不推荐
-btm	半透明
-bts	半桶水
-btt	扁桃体
-btv	白天鹅
-btw	别太晚
-bty	不同意
-bvg	巴尔干
-bwd	不稳定
-bxc	别瞎扯
-bxd	不晓得
-bxf	不相符
-bxg	不习惯
-bxh	不喜欢
-bxj	步行街
-bxk	必修课
-bxl	不行了
-bxm	不行吗
-bxn	不像你
-bxp	必需品
-bxq	保修期
-bxw	不希望
-bxy	不需要
-byb	不一般
-byd	不一定
-byf	八月份
-byg	不应该
-byj	不要紧
-byl	不用了
-byn	比翼鸟
-byq	变压器
-bys	不要说
-byw	本以为
-byz	不一致 布依族
-bzc	不赞成 不支持
-bzd	不知道
-bzf	辩证法
-bzh	不在乎
-bzj	不在家 不着急
-bzl	不早了
-bzm	不知名 不怎么
-bzq	不值钱 不足取
-bzr	班主任 不自然
-bzs	不只是 不早说
-bzt	不折腾
-bzw	不作为
-bzx	不在线 标志性
-bzz	不自在 标志着
-cbb	吃不饱
-cbc	吃不吃 从不曾
-cbd	猜不到 差不多
-cbf	吃白饭
-cbg	吃不惯
-cbh	才不会
-cbk	吃不开
-cbl	错不了 吃饱了
-cbq	出不去 擦边球
-cbs	才不是 出版社
-cbx	吃不下
-cbz	错别字 藏不住
-ccc	噌噌噌
-cch	擦擦汗
-ccp	残次品
-ccq	传出去
-ccy	吃错药
-cdd	沉甸甸
-cdl	猜到了
-cdq	充电器
-cfl	吃饭了
-cgj	踩过界
-cgl	错过了
-cgs	车管所
-chh	茶话会
-chj	催化剂
-cjg	成就感
-cjt	长镜头
-ckb	触控板
-ckg	长宽高
-ckn	才可能
-ckq	喘口气
-cks	才开始
-ckt	创可贴
-ckw	重口味
-clb	从来不
-clc	擦了擦 查了查
-clf	差旅费
-cll	赤裸裸
-clp	处理品
-clq	处理器
-clt	催泪弹
-clx	策略性
-clz	车轮战
-cmd	崇明岛
-cmm	藏猫猫 重命名
-cmp	触摸屏
-cmq	催眠曲
-cmr	聪明人
-cms	触摸式
-cmy	从没有 沉迷于
-cmz	充满着
-cnb	吹牛逼
-cng	才能够
-cnl	吃腻了
-cnm	处女膜
-cnp	吹牛皮
-cnr	成年人
-cpg	擦屁股
-cql	出去了 藏起来
-cqs	重庆市
-cqt	出气筒
-cqw	出去玩
-crn	凑热闹
-ctg	床头柜
-ctn	出头鸟
-ctt	赤条条
-ctx	重头戏 长筒靴
-cty	差太远
-ctz	醋坛子
-cwf	吃完饭
-cwg	储物柜
-cwh	村委会 常委会
-cwl	吃完了 错误率
-cwt	出问题
-cww	颤巍巍
-cwx	储物箱
-cxb	插线板
-cxf	吃闲饭 磁悬浮
-cxl	出现了
-cxq	吃下去
-cxs	畅销书 储蓄所
-cxx	持续性
-cxy	才需要 程序员
-cxz	趁现在 初学者
-cyb	搓衣板
-cyc	猜一猜
-cyd	参与度
-cym	曾用名
-cys	超音速
-czb	成正比
-czg	存在感
-czj	财政局
-czt	操作台
-czy	出主意
-dbd	对不对
-dbf	大部分
-dbg	打不过
-dbh	都不会
-dbj	等不及
-dbk	打不开
-dbl	大不了
-dbm	道不明
-dbn	都不能
-dbq	对不起
-dbr	倒不如
-dbs	倒不是
-dbx	代表性
-dby	大本营
-dbz	带不走 对不住
-dch	倒春寒
-ddp	电灯泡
-ddq	对得起
-dfb	电饭煲
-dfd	大幅度
-dfg	电饭锅
-dfh	东方红
-dfm	单方面
-dfn	豆腐脑
-dfr	豆腐乳
-dfw	大范围
-dfx	地方性
-dfy	丹凤眼
-dfz	豆腐渣
-dgc	胆固醇
-dgf	大锅饭
-dgg	顶呱呱
-dgm	大规模
-dgq	打过去
-dhg	读后感
-dhh	打哈哈
-dhs	导火索
-dlb	得了吧
-dlc	大老粗
-dld	多伦多
-dlg	第六感
-dlh	度量衡
-dlj	邓丽君
-dll	带来了
-dlm	对立面
-dlq	多了去
-dlr	代理人
-dls	大理石
-dlt	大冷天
-dlx	独立性
-dly	大老远
-dlz	掉链子 顶梁柱
-dmq	独木桥
-dpm	大屏幕
-dpw	肚皮舞
-dpx	地平线
-dqc	大气层
-dqh	电气化
-dql	打起来
-dqs	道琼斯
-dqy	大气压
-dqz	兜圈子 当权者
-drc	单人床
-dsg	第三个
-dsn	第三年
-dth	洞庭湖
-dtq	大提琴
-dts	大体上
-dtt	断头台
-dtv	呆头鹅
-dtx	独特性
-dty	等同于
-dtz	打头阵
-dvg	第二个
-dvq	大而全
-dwj	端午节
-dwk	吊胃口
-dwl	都忘了
-dwp	调味品
-dww	大无畏
-dwy	动物园
-dxb	大小便
-dxc	大学城
-dxd	单行道
-dxf	东西方
-dxg	胆小鬼
-dxh	都喜欢
-dxj	大小姐
-dxl	掉下来
-dxm	大熊猫
-dxs	大学生 单相思
-dxt	低血糖
-dxv	店小二
-dxw	定心丸
-dxx	大小写
-dxy	大西洋
-dxz	东乡族
-dyb	第一遍
-dyc	第一次 打圆场
-dyf	独一份
-dyg	第一个
-dyl	等于零
-dym	第一名
-dyn	第一年
-dyr	代言人
-dzd	都知道
-dzq	打砸抢 等着瞧
-dzw	都在玩
-fbc	发不出
-fbf	烦不烦
-fbl	分辨率
-fbq	分不清
-fbs	分别是
-fbx	放不下
-fby	翻白眼
-fbz	犯不着
-fcb	非常棒
-fcc	非常差
-fcd	非常多
-fcf	肥肠粉
-fcg	非常高
-fch	非常好
-fcj	放长假
-fck	非常快
-fcl	发错了 非常冷
-fcm	非常慢
-fcn	非常难
-fcq	非常强
-fcr	非常热
-fcs	方程式
-fcx	放长线
-fcz	房产证
-fdc	房地产
-fdd	肥嘟嘟
-fdg	梵蒂冈
-fdm	防盗门
-fdp	反对派
-fds	反倒是
-fdx	放得下
-fdy	辅导员
-fhq	防火墙
-fkd	防空洞
-fkp	放空炮
-fkz	方块字
-flb	菲律宾
-flc	分理处
-flf	福利费
-flh	风凉话
-fll	法拉利
-flp	飞利浦
-flq	费力气
-fls	发牢骚
-flv	氟利昂
-flw	法令纹
-flx	法兰西
-fly	福利院
-flz	负离子
-fml	发霉了
-fmm	敷面膜
-fmp	非卖品
-fmq	父母亲
-fmt	飞毛腿
-fmw	分泌物
-fmy	驸马爷
-fnj	妇女节
-fnl	服你了
-fpl	废品率
-fpq	发脾气
-fqd	夫妻店
-fqh	凤求凰
-fqj	番茄酱
-fql	放弃了
-fqz	肺气肿
-frd	副热带
-frj	缝纫机
-fsl	烦死了
-fsr	烦死人
-fss	风嗖嗖
-fsx	发散性
-ftj	反贪局
-ftz	繁体字
-fvd	富二代
-fvs	凡尔赛
-fwc	俯卧撑
-fxb	风向标
-fxd	发祥地
-fxg	方向感
-fxj	抚恤金
-fxl	发现了
-fxp	方向盘
-fxs	烦心事 法西斯
-fxx	方向性
-fxy	飞行员
-fyc	反义词
-fyd	发源地
-fyg	发一个
-fyj	复印件
-fyl	反映了
-fyq	发言权
-fyr	发言人
-fyx	防御性
-fzf	反政府
-fzg	负罪感
-fzh	法制化
-fzl	非主流
-fzm	辅助码
-fzx	复杂性 辅助性
-fzy	分之一 副作用
-fzz	发展中
-gbb	干巴巴
-gbc	高不成
-gbd	怪不得
-gbg	够不够
-gbh	搞不好
-gbj	赶不及
-gbl	管不了
-gbn	更不能
-gbq	过不去
-gbt	搞半天
-gbx	鬼把戏
-gby	个把月 过把瘾
-gbz	管不着 光膀子
-gcd	共产党
-gcj	歌唱家
-gcl	观察力
-gcq	滚出去
-gcs	工程师
-gcw	广场舞
-gcz	过程中
-gdq	过得去
-gdz	鬼点子
-gfh	规范化
-gfx	规范性
-gkj	高科技
-gks	公开赛
-gkx	公开信
-gll	孤零零
-glr	过来人
-glt	过两天
-gmd	国民党
-gmg	鬼门关
-gml	根目录
-gmq	冠名权
-gmv	哥们儿
-gmz	擀面杖
-gnd	高难度
-gnn	姑奶奶
-gnq	更年期
-gnw	国内外
-gnx	功能性
-gpc	跟屁虫
-gpg	狗皮膏
-gpx	公平性
-gqc	搞清楚
-gqd	过去的
-gqj	国庆节
-gql	过去了
-gqm	鬼敲门
-gqs	过去时
-gqt	共青团
-gqx	高清晰
-gtb	改天吧
-gtc	共同处 感叹词
-gtd	共同点
-gtf	刮台风
-gth	感叹号
-gtl	改天聊
-gtn	管他呢
-gts	古铜色
-gtz	狗腿子
-gvj	公安局
-gvt	港澳台
-gwb	公文包
-gws	个位数
-gxy	高血压
-gyd	过一段
-gyg	高压锅
-gyj	冠亚军
-gyp	工艺品
-gyq	公元前
-gyy	归因于
-gyz	过一阵
-hbb	汉堡包
-hbc	还不错
-hbd	恨不得
-hbf	好办法
-hbg	还不够
-hbh	会不会
-hbj	环保局
-hbk	还不快
-hbl	花不了
-hbn	还不能
-hbq	回不去
-hbs	还不是
-hbt	好半天
-hbw	花不完
-hbx	还不行
-hby	后半夜
-hbz	还不止
-hcc	昏沉沉
-hcd	好吃的
-hcf	好处费
-hch	护城河
-hcj	回车键
-hfl	恢复了
-hgd	花骨朵
-hgh	回个话
-hgl	花光了
-hgq	昏过去
-hgt	回过头
-hhf	何海峰
-hhh	哈哈哈
-hhj	黑胡椒
-hhr	合伙人
-hhs	好好说
-hhy	后悔药
-hhz	好孩子
-hjn	好几年
-hjt	好几天
-hkb	户口本
-hkj	黑科技
-hkn	很可能
-hlg	火龙果
-hlm	红楼梦
-hlp	黄脸婆
-hmb	坏毛病
-hmc	花名册
-hmd	黑名单
-hmf	很麻烦
-hmg	哈密瓜
-hmm	灰蒙蒙
-hmq	回马枪
-hms	红霉素
-hmx	很明显
-hmy	鸿门宴
-hnd	海南岛
-hnj	回娘家
-hnl	活腻了
-hnt	混凝土
-hnw	海内外
-hnz	哈尼族
-hpg	和平鸽
-hpj	黄浦江
-hpl	很漂亮
-hpm	海平面
-hpp	红扑扑
-hpy	好朋友
-hqc	很清楚
-hqd	何其多
-hqg	很奇怪
-hql	回去了
-hqq	黑漆漆
-hqs	换气扇
-hqt	核潜艇
-hqx	好奇心
-htc	回头草 糊涂虫
-htg	猴头菇
-hth	皇太后
-htj	回头见
-htk	回头客
-htl	回头率
-htr	核桃仁
-hts	火头上
-htt	红彤彤
-htv	黑天鹅
-htw	横条纹
-htz	皇太子
-hvx	海岸线
-hwj	好望角
-hwn	哈瓦那
-hwy	画外音
-hxb	还行吧
-hxc	候选窗
-hyb	很一般
-hyf	会议费
-hyh	缓一缓
-hyl	回忆录
-hyq	黑眼圈
-hyz	后遗症
-hzh	洪泽湖
-jbf	加班费
-jcc	急匆匆
-jcl	记错了
-jcy	仅次于
-jdd	娇滴滴
-jdh	机顶盒
-jdj	基督教
-jdl	几点了
-jds	绝对是
-jdy	就等于
-jfl	解放了
-jfp	警匪片
-jfq	解放前
-jfs	紧肤水
-jft	简繁体
-jfx	见分晓
-jfz	几分钟
-jgc	加工厂
-jgg	九宫格
-jgj	金刚经
-jgl	举个例
-jgm	见个面
-jgn	结果呢
-jgp	截个屏
-jgr	几个人
-jgs	见光死
-jgt	截个图
-jgw	甲骨文
-jgy	几个月
-jgz	几个字
-jhb	就好比
-jhc	交汇处
-jhg	脚后跟
-jhj	交换机
-jhm	激活码
-jhr	监护人
-jhs	几乎是
-jhx	就好像
-jhz	叫花子
-jjc	竞技场 经济舱
-jjg	肩胛骨
-jjh	几句话
-jjk	借记卡
-jjl	解决了
-jjm	解解闷
-jjn	近几年
-jjr	节假日
-jjs	旧金山
-jjt	近几天
-jjw	降降温
-jjx	积极性
-jlb	俱乐部
-jnp	纪念品
-jrs	假如说
-jrx	兼容性
-jry	金融业
-jsc	寄生虫
-jsj	计算机
-jsl	急死了
-jsn	几十年
-jsq	计算器
-jss	江苏省
-jtg	晶体管
-jvg	今儿个
-jvz	紧挨着
-jwb	巨无霸
-jwd	经纬度
-jwh	居委会
-jwj	鸡尾酒
-jwl	就为了
-jwn	几万年
-jwr	局外人
-jws	家务事
-jwx	基围虾
-jwy	寄望于
-jwz	健忘症
-jxp	教学片
-jys	交易所
-jzb	酒糟鼻
-jzd	就知道
-jzf	鸡爪疯
-jzg	节奏感 九寨沟
-jzh	镜中花
-jzj	剧作家 假正经
-jzk	急诊科
-jzl	君子兰
-jzm	就这么
-jzr	截止日
-jzs	简直是
-jzt	金字塔 脚趾头
-jzw	急转弯
-jzx	集装箱
-jzy	就在于
-jzz	居住证
-kbd	看不懂
-kbg	看不惯
-kbj	看不见
-kbk	看不看
-kbl	快不了
-kbp	恐怖片
-kbq	看不清
-kbs	看不上
-kbt	看不透
-kbx	可比性
-kby	可不要
-kbz	哭鼻子
-kcb	开场白
-kcd	快车道
-kcj	空城计
-kcl	看出来
-kcx	可持续
-kfs	开发商
-kfx	开放性
-kfy	口服液
-kfz	孔夫子
-kgb	克格勃
-kgl	看过了
-kgx	客观性
-kgz	恐高症
-khd	客户端
-khp	科幻片
-khz	葵花籽
-kkx	可靠性
-klc	可怜虫
-kll	卡路里
-kmg	看门狗
-kmh	开门红
-kml	喀麦隆
-kms	开幕式
-kmz	扣帽子
-knb	可能吧
-knd	跨年度
-knh	困难户
-knl	看腻了
-knm	可能吗
-kns	可能是
-knx	可能性
-kny	肯尼亚
-kpl	堪培拉
-kqc	看清楚
-kqk	看情况
-kql	看起来
-kqs	矿泉水
-krj	苦肉计
-krn	看热闹
-ksc	瞌睡虫
-ksh	口水话
-ksq	看上去
-ksx	可塑性
-ktc	口头禅
-kth	客套话
-kts	口头上
-ktv	卡塔尔
-kty	口头语
-kwb	勘误表
-kwc	开胃菜
-kwj	矿务局
-kwt	科威特
-kwx	开玩笑
-kwz	矿物质
-kxc	开小差 空心菜
-kxj	科学家
-kxs	亏心事 苦行僧
-kxx	可行性
-kyb	看一遍
-kyc	开夜车
-kyd	快一点
-kyk	看一看
-kym	可以吗
-kyx	看一下
-kyy	看一眼
-kyz	看样子 客运站
-kzm	扩展名
-lbj	来不及
-lbn	老板娘
-lbp	两边跑
-lbq	了不起
-lbx	老本行
-lbz	留不住
-lcw	另存为
-ldj	来得及
-ldk	离得开
-ldn	老大难
-ldx	流动性
-ldy	老掉牙
-lfl	浪费了
-lfm	两方面
-lft	龙凤胎
-lfz	两分钟
-lgb	两个半
-lgf	驴肝肺
-lgh	泸沽湖
-lgk	理工科
-lgr	两个人
-lgy	两个月
-lgz	两个字 两个钟
-lhb	厉害吧
-lhl	厉害了
-lhn	老黄牛
-lhs	两回事
-lht	老糊涂
-lhx	灵活性
-lhz	兰花指
-ljc	龙井茶
-ljq	立交桥
-ljt	垃圾桶
-lks	流口水
-lls	理论上
-lml	来没来
-lms	两码事
-lmz	龙门阵
-lnn	老奶奶
-lph	脸皮厚
-lpj	零配件
-lpp	老婆婆
-lpy	老朋友
-lrl	利润率
-lsc	两三次
-lsg	两三个
-lsj	两三句
-lsn	两三年
-lsr	累死人
-lst	两三天
-lsy	类似于
-ltd	鹿特丹
-ltj	落汤鸡
-ltl	两条路
-ltp	老太婆
-ltq	愣头青
-lts	立体声
-ltv	老头儿
-ltx	老同学
-lty	老天爷
-lwv	遛弯儿
-lxj	连续剧
-lxq	拉下去
-lxs	两小时
-lxt	旅行团
-lxx	连续性
-lxz	老想着 两下子
-lyc	来一次
-lyg	另一个
-lyh	莱茵河
-lym	另一面
-lys	露一手
-lyz	另一种
-lzy	雷阵雨
-lzz	乱糟糟 连轴转
-mbr	明白人
-mbt	摸不透
-mbz	明摆着
-mcx	没出息
-mdh	忙得很
-mdm	面对面
-mfl	麻烦了
-mfw	马蜂窝
-mfx	没发现
-mfy	没反应
-mfz	每分钟
-mgf	没工夫
-mgp	冒个泡
-mgr	每个人
-mhh	明晃晃
-mhp	马后炮
-mhq	灭火器
-mht	明后天
-mhv	眯会儿
-mhy	模糊音
-mjl	孟加拉
-mkf	麦克风
-mkn	没可能
-mlc	美联储
-mld	没料到
-mlh	茉莉花
-mlj	美利坚
-mll	毛利率
-mlm	摸了摸
-mls	马拉松
-mlw	马拉维
-mly	没理由
-mlz	面临着 仫佬族
-mmb	没明白
-mmc	毛毛虫
-mnh	慕尼黑
-mnl	马尼拉
-mny	木乃伊
-mpt	孟婆汤
-mqd	马其顿
-mqg	没去过
-mql	没钱了
-mqx	明确性
-mqz	煤气灶
-mrj	美人计
-mrl	没人理
-mrr	毛茸茸
-mrv	美人儿
-mrx	没人性
-mry	美人鱼
-msb	慢三步
-msl	忙死了
-msr	陌生人
-msw	没所谓
-mtc	摩托车
-mtd	没听懂
-mtg	没听过
-mth	满堂红
-mtj	没听见
-mtl	摩天轮
-mtq	没听清
-mtr	木头人
-mts	没听说
-mtt	慢吞吞
-mtx	满天星
-mty	猫头鹰
-mvb	墨尔本
-mvg	明儿个
-mvq	门儿清
-mvt	马耳他
-mwk	没胃口
-mxb	慢性病
-mxd	没想到
-mxg	没想过
-mxp	明信片
-mxq	没兴趣
-mxr	某些人
-mxs	每小时
-mxy	莫须有
-mxz	慢性子 明细账
-myb	每一步
-myc	每一次 梦一场
-myd	慢一点
-myf	每一份
-myg	每一个
-myj	没意见
-myk	每一刻
-myl	没有了
-mym	摸一摸
-myn	每一年
-myp	慢一拍
-mys	没意思 名义上
-myt	每一天
-myw	每一位
-myx	每一项
-myy	慢悠悠
-myz	每一种 牡羊座
-mzd	毛泽东
-mzg	满足感
-mzh	民主化
-mzj	没主见
-mzl	满足了 命中率
-mzm	没这么 没怎么
-mzp	免战牌
-mzv	没准儿
-mzw	没指望
-mzx	毛主席
-mzy	没注意
-mzz	没找着
-nbc	难不成
-nbd	弄不懂
-nbj	那不就
-nbn	能不能
-nbq	弄不清 南半球
-nbs	那不是
-nbz	耐不住 牛鼻子
-ncl	拿出来 弄错了
-ncp	农产品
-ndb	脑电波
-ndg	脑袋瓜
-ndl	拿到了
-nfm	哪方面
-ngc	哪根葱
-ngv	尼姑庵
-ngz	那个字
-nhh	黏糊糊
-nhl	拿回来
-nhq	奈何桥
-nhv	那会儿
-njh	那句话
-njj	牛角尖
-njl	凝聚力
-njz	南极洲
-nkt	脑壳痛
-nld	哪来的
-nll	年利率
-nmd	那么多
-nmg	内蒙古
-nmy	脑膜炎
-nmz	脑门子 南美洲
-nnl	努努力
-npl	拿破仑
-npq	牛脾气
-nps	哪怕是
-npx	牛皮癣
-nqh	年轻化
-nql	哪去了
-nrm	牛肉面
-nrp	男人婆
-nrr	暖融融
-nrv	尼日尔
-nsr	纳税人
-nss	鸟兽散
-nsz	逆时针
-ntl	那条路
-nxb	脑细胞
-nxg	那些个
-nxl	纽西兰
-nxn	那些年
-nxs	脑血栓
-nxz	那小子
-nyd	哪一点
-nyf	年夜饭
-nyg	哪一个
-nyh	哪一回
-nyk	哪一款
-nyr	年月日
-nyw	哪一位
-nyz	哪一种
-nzd	哪知道
-nzh	男子汉
-nzj	娘子军
-nzk	牛仔裤
-nzl	拿走了
-nzw	闹着玩 农作物
-nzy	乃至于
-pbg	皮包骨
-pbl	跑不了
-pbp	怕不怕
-pcx	平常心
-pcy	偏重于
-pdb	跑单帮
-pfb	皮肤病
-pfm	平方米
-pgz	泡个澡
-phh	胖乎乎
-phm	平衡木
-phx	破坏性
-pjl	破纪录
-plh	漂亮话
-plm	拼了命
-plp	拍了拍
-pls	泼冷水
-plt	跑龙套
-pmk	贫民窟
-pmt	平面图
-ppp	啪啪啪
-ppr	飘飘然
-pql	爬起来
-pqs	喷气式
-pqx	迫切性
-prl	平日里
-prs	譬如说
-psl	蒲松龄
-psx	普适性
-ptg	葡萄干
-pth	普通话
-ptj	葡萄酒
-ptl	泡汤了
-ptr	普通人
-pts	普陀山
-ptt	葡萄糖
-ptx	排他性
-pty	葡萄牙
-pwx	抛物线
-pxb	排行榜 培训班
-pxf	培训费
-pxp	拍胸脯
-pxx	平行线
-pxy	偏向于
-pyh	鄱阳湖
-pyp	拼一拼
-pyq	朋友圈
-pzh	破折号
-pzp	怕只怕
-qbg	气不过
-qbl	去不了
-qbt	丘比特
-qbz	却不知
-qcj	起重机
-qdc	气垫船
-qdf	清道夫
-qdh	千岛湖
-qdl	取得了
-qdq	瞧得起
-qdx	确定性
-qdz	期待着
-qfb	全封闭
-qfh	千分号
-qfq	潜伏期
-qfw	全方位
-qfx	启发性
-qfz	千分之
-qgd	穷光蛋
-qgg	气鼓鼓
-qgj	缺根筋
-qgl	奇怪了
-qgq	曲棍球
-qgx	全国性
-qgz	潜规则
-qhc	青花瓷
-qhd	秦皇岛
-qhh	气呼呼
-qhj	前后脚
-qhl	亲和力
-qhs	青海省
-qht	秋海棠
-qhw	氰化物
-qjc	前几次
-qjd	旗舰店
-qjf	全家福
-qjg	前几个
-qjj	清洁剂
-qjl	请见谅
-qjm	前几名
-qjn	前几年
-qjp	全键盘
-qjr	前几日
-qjt	前几天
-qjx	请教下
-qjy	取决于
-qjz	前脚走
-qlg	前两个
-qph	俏皮话
-qpp	轻飘飘
-qqv	蛐蛐儿
-qsl	气死了
-qss	起诉书
-qtj	钱塘江
-qtq	青铜器
-qwm	区位码
-qwz	期望值
-qxh	情绪化
-qxl	取消了
-qxn	前些年
-qxt	前些天
-qyb	晴雨表
-qyc	去一次
-qyd	前一段
-qyf	七月份
-qyl	强有力
-qyq	瞧一瞧
-qys	清一色 潜意识
-qyw	前一晚
-qzb	签字笔
-qzd	全自动 起征点
-qzf	区政府
-qzg	敲竹杠
-qzn	青壮年
-qzs	清真寺
-qzt	穷折腾
-qzx	强制性
-qzy	起作用 求知欲
-qzz	牵着走
-rbc	认不出
-rbd	容不得
-rbl	饶不了
-rbq	惹不起
-rbr	让不让 热不热
-rbs	若不是
-rbx	容不下
-rbz	忍不住
-rcb	日程表
-rcf	入场费
-rcq	入场券
-rdh	惹的祸
-rdy	热带鱼
-rdz	软刀子
-rgq	绕个圈
-rgy	日光浴
-rhj	热乎劲
-rhs	任何事
-rjm	肉夹馍
-rjp	软键盘
-rkl	绕口令
-rkq	热空气
-rlf	人来疯
-rll	人流量
-rlr	揉了揉
-rlx	人类学
-rmb	人民币
-rmm	软绵绵
-rnl	忍耐力
-rnw	日内瓦
-rpp	软趴趴
-rps	日偏食
-rqq	热气球
-rqs	日全食
-rqw	人情味
-rqz	绕圈子
-rrs	热热身
-rrx	柔韧性
-rsl	热死了
-rst	染色体
-rtm	人头马
-rts	人头税
-rtt	热腾腾
-rvm	日耳曼
-rwl	任务栏
-rwz	绕弯子
-rxc	热心肠
-rxd	人行道
-rxh	人性化
-rxr	热心人
-ryg	荣誉感
-ryp	日用品
-ryq	绕一圈
-ryr	忍一忍
-ryt	日月潭
-ryw	容易忘
-rzn	孺子牛
-rzr	绕指柔
-sbc	说不出
-sbd	说不定 三班倒
-sbf	少部分
-sbg	三不管
-sbh	说不好 三把火
-sbj	所不及
-sbk	社保卡
-sbl	受不了 随便了
-sbn	上半年 随便你
-sbq	说不清 三部曲
-sbs	算不算 是不是 时不时
-sbt	双胞胎
-sbw	说不完
-sbx	睡不醒 四不像
-sby	上半夜
-sbz	睡不着 腮帮子
-scp	收藏品
-sdf	水电费
-sdg	十多个
-sdh	说得好
-sdj	三等奖 圣诞节
-sdl	死定了
-sdm	收到没
-sdn	十多年
-sdr	三代人 十多人
-sds	山东省 所得税
-sdt	死对头 手电筒
-sdx	私底下
-sfc	私房菜
-sfj	司法局
-sfq	私房钱
-sft	三伏天
-sfz	身份证 三分钟
-sgb	三个半
-sgg	山沟沟
-sgl	苏格兰
-sgp	算个屁
-sgt	摔跟头
-shs	四环素
-sjc	私家菜 私家车
-sjh	三句话
-sjq	丧家犬
-skb	时刻表
-skl	顺口溜
-skq	松口气
-sks	萨克斯
-skt	思考题
-sky	社科院
-slb	算了吧
-slc	三轮车
-sld	塑料袋
-slg	十来个 三连冠
-slk	斯洛克
-sll	酸溜溜 水灵灵
-slm	所罗门 耍流氓
-sln	苏里南
-sls	算了算 说了算
-slt	水龙头
-slx	三两下 生理学
-sly	司令员
-slz	撒拉族
-smg	神秘感
-smh	书名号
-smj	双面胶
-sml	生命力 索马里
-smm	色眯眯
-smq	生闷气
-sms	说明书
-smt	水蜜桃
-smx	生命线
-smy	守门员 扫描仪
-smz	三明治 实名制
-snb	随你吧
-sng	少年宫
-snj	伤脑筋 刹那间
-snk	斯诺克
-spg	水平高
-spl	撕破脸
-spm	水平面
-spq	适配器
-spx	水平线
-sqb	受气包
-sqc	说清楚
-sqk	三七开
-sql	算起来 失去了
-sqn	数千年
-sqq	死翘翘
-sqs	申请书 十七岁
-sqx	双曲线
-sqy	三缺一
-src	双人床
 srf	输入法
-srj	双刃剑
-srs	收容所
-ssd	十三点
-ssh	私生活
-ssm	送上门
-sss	三四岁
-sst	三四天 随身听
-ssv	塞舌尔
-stc	手推车
-stl	三条路 伤透了
-stq	随他去
-stw	竖条纹
-stx	试探性
-sty	晒太阳
-svs	十二岁
-svy	十二月
-swc	商务舱
-swh	上午好
-swj	税务局
-swk	孙悟空
-swl	失误了 死亡率
-swm	视网膜
-swq	生物圈
-sws	四五岁 四五十
-swt	啥问题
-sww	爽歪歪
-swy	三文鱼
-sxf	手续费
-sxh	说瞎话
-sxl	私下里
-sxq	实习期
-sxr	双休日
-sxs	三小时
-sxw	色香味 上下文
-sxx	思想性
-sxy	死心眼 受限于
-sxz	受限制
-syf	十月份
-syg	上一个
-syh	双引号 私有化
-syn	所以呢
-sys	所以说 扫一扫
-syt	收银台
-syw	是因为
-syx	试一下
-syy	扫一眼
-syz	是一种
-szs	深圳市
-szt	手指头
-szy	嗓子眼
-tbc	听不出 挺不错
-tbd	听不懂
-tbg	通不过
-tbj	听不见
-tbl	太棒了
-tbq	听不清
-tbs	谈不上
-tbt	听不听
-tcl	听错了
-tcw	铜臭味
-tfb	挺方便
-tfg	通风管
-tfj	太费劲
-tfl	太烦了
-tfw	铁饭碗
-tfx	突发性
-tgf	太过分
-tgg	头盖骨
-tgx	提个醒
-tgy	铁观音
-thb	天花板
-thl	太好了
-tjl	听见了
-tjq	太极拳
-tjs	田径赛
-tlf	吐鲁番
-tlh	挺厉害
-tlj	拖拉机
-tll	太累了
-tlr	同龄人
-tls	托拉斯
-tlv	谈恋爱
-tlx	铁了心
-tlz	捅娄子
-tml	太慢了
-tns	突尼斯
-tpf	通配符
-tpk	突破口
-tpx	突破性
-tpy	太平洋
-tqc	听清楚
-tqd	跆拳道
-tqj	探亲假
-tql	太强了
-tqx	同情心
-tqy	听其言
-trl	太弱了
-trm	甜如蜜
-trq	天然气
-trx	讨人嫌
-try	挺容易
-tsg	图书馆
-ttc	土特产
-ttd	妥妥的
-ttg	退堂鼓
-ttj	凸透镜
-ttl	淘汰了
-ttq	通通气
-tts	提提神 淘汰赛
-ttw	踢踏舞
-ttz	团团转
-tvl	太矮了
-tvq	土耳其
-twd	台湾岛
-twh	题外话
-twj	体温计
-twl	太晚了
-tws	同位素 台湾省
-twt	天文台
-twx	天文学
-txc	体现出
-txd	剃须刀
-txj	退休金
-txl	通讯录
-txm	同学们
-txs	通讯社
-txx	挑衅性
-txz	通行证
-tyc	体育场
-tyg	同一个
-tyh	头一回
-tyn	太阳能
-typ	拖油瓶
-tyy	投影仪
-tyz	同音字
-vbf	耳边风
-vbg	熬不过 拗不过
-vbh	而不会
-vbj	矮半截
-vbl	阿波罗 饿扁了
-vbn	而不能
-vbq	而不去
-vbs	而不是 饿不死
-vbv	爱不爱 饿不饿
-vbw	二百五
-vby	而不用
-vbz	熬不住
-vcl	按错了 按常理
-vcs	二传手
-vcy	二次元
-vdj	二等奖
-vdv	安道尔
-vfg	阿房宫
-vfh	阿富汗
-vft	阿凡提
-vgl	安哥拉
-vgt	二锅头 欧共体
-vgz	爱国者
-vhh	恶狠狠
-vhs	安徽省
-vhy	二合一
-vjd	二季度
-vjz	二进制
-vlb	阿拉伯
-vld	阿拉丁
-vlh	安理会
-vlq	阿联酋
-vls	安乐死 按理说
-vlt	二郎腿
-vlw	安乐窝
-vlz	二流子
-vms	峨眉山
-vmy	安眠药
-vmz	爱面子
-vnj	二年级
-vpf	耳旁风
-vpk	欧佩克
-vqg	安全感
-vqh	爱琴海
-vqj	安全局
-vqp	爱情片
-vqx	安全性
-vsb	二十八
-vsd	二十多
-vsj	二十九
-vsk	奥斯卡
-vsl	饿死了 二十六
-vsm	阿诗玛
-vsn	二十年
-vsq	二十七
-vss	爱谁谁 二三十
-vsv	二十二
-vsw	二十五
-vsy	二十一
-vsz	二傻子
-vtj	凹透镜 儿童节
-vts	安徒生
-vvf	阿尔法
-vvl	爱尔兰
-vwh	奥委会
-vwm	二维码
-vxy	二选一
-vyf	二月份
-vyh	奥运会
-vyw	哎呦喂
-vzb	安装版 艾滋病
-vzc	二指禅
-vzj	恶作剧
-wbb	喂不饱
-wbc	完不成 窝边草
-wbd	王八蛋
-wbh	五笔画
-wbl	忘不了
-wbq	玩不起
-wbs	无不是
-wbz	玩不转
-wcl	完成了
-wcm	无重码
-wcn	未成年
-wcz	无产者 误操作
-wdd	无底洞
-wgd	乌干达
-wgf	晚高峰
-wgh	温哥华
-wgj	乌骨鸡
-wgl	玩够了
-wgn	亡国奴
-wgr	外国人
-wgy	五个月
-wgz	五个字
-whr	五花肉
-wkl	乌克兰
-wkx	五颗星
-wky	胃溃疡
-wlb	忘了吧
-wlc	乌龙茶
-wld	五六点
-wlf	窝里反
-wlg	乌拉圭
-wlh	网络化
-wlk	往来款
-wlm	无理码
-wln	五六年
-wlq	乌龙球
-wls	五六岁
-wlt	玩两天
-wlw	问了问
-wlx	物理学
-wly	五粮液
-wmm	雾蒙蒙
-wms	无名氏
-wmt	亡命徒
-wnf	窝囊废
-wnj	万能键
-wnl	玩腻了
-wnq	窝囊气
-wns	威尼斯 毋宁说
-wqj	挖墙脚
-wrj	无人机
-wrm	万人迷
-wry	污染源
-wsm	为什么
-wsn	外孙女
-wtb	乌托邦
-wth	渥太华
-wtj	无条件
-wtm	维他命
-wtr	委托人
-wts	问题是
-wvm	沃尔玛
-wvw	沃尔沃
-wxc	胃下垂
-wxd	无线电
-wxj	五星级
-wxp	五线谱
-wxq	危险期
-wxr	外星人
-wxw	无线网
-wxx	危险性
-wxz	无形中
-wyb	晚一步
-wyd	晚一点
-wyf	五月份
-wyg	无用功
-wyj	无意间
-wyl	无压力
-wyn	维也纳
-wys	武夷山
-wyv	玩意儿
-wyw	文言文
-wyx	问一下
-wyy	无异于
-wyz	无意中 乌鸦嘴
-wzf	外祖父 无政府
-wzg	尾椎骨
-wzh	无纸化
-wzj	无止境
-wzl	屋子里
-wzm	外祖母
-wzq	五子棋
-wzv	无障碍
-wzx	完整性 晚自习
-wzz	文绉绉
-xbk	想不开
-xcb	下次吧
-xcj	下次见
-xcl	写错了
-xcm	小聪明
-xcx	瞎操心
-xdd	小弟弟
-xdf	小地方
-xdg	信得过
-xdh	闲得慌
-xdk	想得开
-xdm	想得美
-xdn	想当年
-xdr	想当然
-xdt	行得通
-xdw	现代文
-xdx	相对性
-xdy	相当于
-xdz	小动作
-xfc	悬浮窗
-xfd	小幅度
-xfj	兴奋剂
-xfp	消费品
-xfv	媳妇儿
-xfx	新发现
-xfy	消防员
-xfz	消费者
-xgb	修改版
-xgc	性高潮 小高层
-xgd	香港岛
-xgg	小哥哥
-xgj	膝关节
-xgl	习惯了
-xgn	小姑娘
-xgx	习惯性
-xgy	下个月
-xgz	洗个澡
-xhb	小伙伴
-xhd	信号灯
-xhh	笑呵呵
-xhl	学会了
-xhm	喜欢吗
-xhn	瞎胡闹
-xhv	歇会儿
-xhx	下划线
-xhz	向后转
-xjc	小轿车
-xjd	现阶段
-xjj	小姐姐
-xjk	小金库
-xjp	新加坡
-xjq	陷进去
-xjt	心绞痛
-xjy	相较于
-xpn	橡皮泥
-xqc	想清楚
-xql	想起来
-xqt	星期天
-xsf	泄私愤
-xsl	笑死了
-xsp	小算盘
-xsq	显示器
-xsr	吓死人
-xvd	希尔顿
-xvj	小而精
-xvk	小儿科
-xvs	形而上
-xvx	形而下
-xwc	下午茶
-xwh	下午好
-xwj	洗碗机
-xwl	想歪了
-xwx	想问下
-xwy	夏威夷
-xxn	谢谢你
-xyg	下一个
-xzb	修正版 心脏病
-xzd	想知道
-xzh	瞎指挥
-xzj	写字间 新专辑
-xzl	写字楼 下周六
-xzm	下周末 瞎琢磨
-xzq	协奏曲
-xzr	下周日 闲杂人
-xzs	下周三
-xzt	选择题
-xzv	下周二
-xzx	象征性 选择性
-xzy	下周一 写作业
-ybf	一部分
-ybs	也不算
-ycl	原材料
-ydc	一大串
-ydf	一顿饭
-ydg	一等功
-ydj	一等奖
-ydk	一大口
-ydl	意大利
-ydm	源代码
-ydn	雅典娜
-ydp	一大片
-ydq	一大群
-yds	有点事 胰岛素
-ydt	冤大头
-ydv	一点儿
-ydw	亚丁湾
-ydx	运动鞋
-ydz	一大早
-yfh	一分货
-yfk	预付款
-yfl	引发了
-yfm	一方面
-yfq	一分钱
-yfx	一封信
-yfy	依附于
-yfz	一份子 一分钟
-ygb	一个班
-ygc	一个词
-ygd	应该的
-ygf	一公分
-ygg	一个个
-ygh	一锅烩
-ygm	一个梦
-ygn	一股脑
-ygp	荧光屏
-ygr	一个人
-ygs	应该是
-ygy	一个月
-ygz	一个字 一个钟
-ylb	一览表
-ylc	一两次 一连串
-yld	一两点
-ylf	医疗费
-ylg	一两个
-ylh	一两回
-ylk	伊拉克
-yll	又来了
-ylm	跃龙门
-yln	一两年
-ylq	娱乐圈
-yls	原来是
-ylt	一两天
-ylz	意料中 一揽子
-ymb	有毛病
-ymc	油麦菜
-ymd	一面倒
-ymh	妖魔化
-yml	压马路
-ymm	一幕幕
-ymq	一毛钱
-ymr	虞美人
-yms	一码事
-ymv	爷们儿
-ymx	亚马逊
+sbs	算不算 是不是 时不时
 ymy	有没有
-ymz	夜猫子 一秒钟
-ynj	一年级
-yns	云南省
-ypg	一屁股
-ypl	有魄力
-ypm	一平米
-ypp	一片片
-ypy	硬碰硬
-yqd	优缺点
-yqf	右前方
-yqg	一千个
-yqh	邀请函
-yqj	元器件
-yqk	眼前亏
-yql	用起来
-yqq	雨凄凄
-yqs	尤其是
-yqz	有气质
-yrj	愚人节
-ysl	以色列
-ytl	一条路
-ywg	一万个
-ywj	源文件
-ywk	依我看
-ywm	英文名
-ywn	一万年
-yws	一晚上
-ywt	有问题
-yww	洋娃娃
-ywy	业务员
-ywz	意味着
-yxb	也许吧
-yxc	鱼腥草
-yxd	一想到
-yxf	右下方
-yxj	右下角
-yxl	一系列
-yxm	音形码
-yxs	一小时 预选赛
-yxt	一席谈
-yxw	一下午
-yxx	有效性
-yxy	亚细亚
-yxz	一下子 印象中
-yyg	优越感
-yyr	有缘人
-yyt	摇摇头
-yzb	圆珠笔
-yzc	一指禅
-yzf	一阵风
-yzh	一枝花
-yzj	有主见
-yzt	一整天
-yzz	一座座 一阵子
-zbb	皱巴巴
-zbc	做不出 真不错
-zbd	做不到 找不到
-zbg	只不过
-zbh	准备好
-zbj	猪八戒 资本家
-zbk	走不开 睁不开
-zbl	做不了 准备了
-zbn	总不能
-zbr	再不然
-zbs	这不是
-zbx	装不下
-zby	赞比亚 占便宜
-zbz	找不着 坐不住
-zdf	最低分
-zdh	这段话
-zdl	做到了
-zfc	字符串
-zfj	字符集
-zgc	走过场
-zgf	最高分
-zgl	足够了
-zgt	栽跟头
-zgv	自个儿
-zhg	自豪感
-zhj	组合键
-zhs	咋回事
-zhx	综合性
-zjd	总觉得
-zjg	芝加哥
-zjh	这句话
-zjn	这几年
-zjp	椎间盘
-zjt	这几天
-zkl	逐客令
-zks	这可是
-zkx	只可惜
-zky	中科院
-zkz	钻空子 准考证
-zlc	脏乱差
-zld	自留地
-zlh	纸老虎
-zll	着凉了 紫罗兰
-zls	自来水
-zlt	这两天
-zlz	坐落在
-zmb	这么笨 怎么办
-zmc	这么长 怎么成
-zmd	这么多 怎么读
-zmg	这么贵 怎么搞
-zmh	这么好 怎么会
-zmj	这么久 怎么就
-zmk	怎么看
-zml	怎么了
-zmm	这么慢
-zmn	这么难 怎么能
-zmp	这么胖 怎么破
-zmq	这么巧 自贸区
-zmr	掌门人
-zms	这么说 怎么说
-zmt	皱眉头 自媒体
-zmw	这么晚 怎么玩
-zmx	这么想 怎么写
-zmy	这么远 怎么样
-zmz	这么早 怎么做
-znh	中南海
-znj	滞纳金
-znl	正能量
-znr	中年人
-zns	只能说 怎能说
-znt	这年头
-znv	执牛耳
-znx	灾难性
-znz	指南针
-zpr	制片人
-zpz	左撇子
-zqf	正前方 左前方
-zqj	中秋节
-zqm	最起码
-zqr	知其然
-zqy	知其一
-zrg	责任感
-zrw	自认为 主人翁
-zry	最容易
-zsb	座上宾
-ztb	涨停板
-ztc	直通车
-ztg	转托管
-zth	座谈会
-ztl	状态栏 糟蹋了
-ztm	真他妈
-ztq	遭天谴
-ztr	猪头肉
-zts	总体上
-ztt	直挺挺
-ztz	猪蹄子
-zwb	中文版
-zwh	中午好
-zwl	走弯路
-zwm	中文名
-zws	走为上
-zwx	紫外线
-zwz	做文章
-zxb	中小板
-zxc	自行车
-zxf	左下方
-zxg	照相馆
-zxh	最喜欢
-zxj	照相机 左下角
-zxl	坐下来 执行力
-zxn	这些年 早些年
-zxs	中学生 在校生
-zxt	这些天
-zxx	自信心
-zxy	只限于
-zyb	职业病
-zyc	这一次 再一次
-zyd	早一点
-zyf	障眼法
-zyg	找一个
-zyh	自由化
-zyj	转眼间
-zyk	这一块
-zyl	注意力
-zym	至于吗
-zyq	在一起 转一圈
-zys	这也算
-zyt	这一天
-zyv	扎伊尔
-zyw	中英文
-zyz	这样子
-zzd	转折点
-zzq	自治区
-zzs	这种事 杂志社
+
 # 四码固顶（二字）：首字声韵 + 次字声韵，与上一批三码词条同源同序
 bale	罢了
 bamf	把门

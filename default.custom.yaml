@@ -2,7 +2,7 @@ customization:
   distribution_code_name: Weasel
   distribution_version: 0.17.4
   generator: "Rime::SwitcherSettings"
-  modified_time: "Mon Oct 26 19:25:22 2026"
+  modified_time: "Mon Oct 26 23:05:13 2026"
   rime_version: 1.16.1
 patch:
   "ascii_composer/good_old_caps_lock": true
@@ -14,7 +14,6 @@ patch:
     Shift_L: commit_code
     Shift_R: inline_ascii
   schema_list:
-    - {schema: sbxh}
     - {schema: snow_sipin}
     - {schema: snow_xiaohe}
   "switcher/abbreviate_options": true

@@ -4,7 +4,7 @@
 --
 -- 快捷键: Control+j 上移 / Control+k 下移 / Control+l 重置 / Control+p 置顶
 --   作用对象: 当前编码下、候选菜单中的高亮候选
--- 存储: UserDb（LevelDb）自建库，不与声笔 sbxh.extended 用户词典冲突
+-- 存储: UserDb（LevelDb）自建库，不与方案自身的用户词典冲突
 -- 标记: 被手动调过序/置顶的候选，注释里追加 super_sequence/mark_symbol（默认 ↕）
 --   不想要标记就在该方案的 super_sequence 段配 mark_symbol: ""
 --

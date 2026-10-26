@@ -3,7 +3,7 @@
 -- 移植: 抽取按键拦截与映射执行逻辑，去除万象依赖，适配声笔顶功
 --
 -- 功能: 输入"字母+/"快速上屏预设符号/文本；映射值设为 "repeat" 可重复上一次上屏内容
--- 配置: sbxh.custom.yaml 的 quick_symbol_text/ 节点（trigger + symkey）
+-- 配置: 方案 custom.yaml 的 quick_symbol_text/ 节点（trigger + symkey），当前由 snow_xiaohe.custom.yaml 使用
 -- 键位: 默认触发 ^([a-z])/$，即小写字母后按 /
 --   注意: 声笔中单字母是声母简码态，此拦截优先于顶屏，直接上屏快符映射并清码
 

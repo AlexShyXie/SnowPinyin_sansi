@@ -9,11 +9,10 @@
 
 ## 一、目录里实际生效的方案
 
-`default.custom.yaml` 覆盖了 `schema_list`，实际可切换的是三个：
+`default.custom.yaml` 覆盖了 `schema_list`，实际可切换的是两个：
 
 | 方案 | schema_id | 说明 |
 |---|---|---|
-| 声笔小鹤 | `sbxh` | 声笔系列方案（与冰雪无关，共用 `lua/sbxlm/` 的部分模块） |
 | **冰雪四拼** | `snow_sipin` | 每个音节 4 码：声码 + 韵头 + 韵尾 + 声调 |
 | **冰雪三拼·小鹤** | `snow_xiaohe` | 每个音节 3 码：声码 + 韵码 + 声调（小鹤双拼键位） |
 
@@ -177,11 +176,11 @@
 | `snow_sipin.schema.yaml` / `.custom.yaml` / `.fixed.txt` | 冰雪四拼：方案、用户补丁、固顶表 |
 | `snow_xiaohe.schema.yaml` / `.custom.yaml` / `.fixed.txt` | 冰雪三拼小鹤：方案、用户补丁、固顶表 |
 | `snow_bihua.schema.yaml` / `snow_bushou.schema.yaml` | 冰雪附属：笔画反查库、部首反查库（供辅码） |
-| `default.custom.yaml` | 方案菜单（`sbxh / snow_sipin / snow_xiaohe`） |
-| `custom_phrase.txt` | 三方案共用的自定义短语 |
+| `default.custom.yaml` | 方案菜单（`snow_sipin / snow_xiaohe`） |
+| `custom_phrase.txt` | 两个方案共用的自定义短语 |
 | `lua/snow/*.lua` | 冰雪系列模块：fix（固顶）、user_dict、popping（顶功）、table_like、shape_filter/processor（辅码）、postpone、hint、statistics、datetime/number/calculator 等 |
-| `lua/sbxlm/*.lua` | 声笔系列模块；本目录借用其中 `wx_quick_symbol`（快符）与 `wx_sequence`（排序） |
-| `sbxh*.yaml` / `sbxlm.yaml` / `sbyp` / `zhlf` / `sbzdy.txt` | 声笔系列方案与资源（与冰雪无关，仅共用 lua 模块） |
+| `lua/sipin_filter.lua` | 四拼专用：大写韵母筛选（大写不进编码，故不触发顶功） |
+| `lua/sbxlm/wx_quick_symbol.lua`、`wx_sequence.lua` | 从万象移植的快符与排序模块，现由冰雪小鹤使用（原声笔系列已移除，模块名保留未改） |
 
 ---
 
@@ -192,7 +191,7 @@
 | `*.custom.yaml`（键位、挂载、开关） | 不需要（但改动件后建议重新部署） | 一键回退就是删掉对应 patch 行 |
 | `<schema>.fixed.txt` | 不需要 | 方案数据文件，重新部署或切走再切回即生效 |
 | `*.schema.yaml` 的 `*_algebra` | **需要**（部署会明显变慢） | 改编码规则务必重跑音节回归验证 |
-| lua 模块 | 不需要 | 与 `sbxh` 共用的模块改动会同时影响声笔小鹤 |
+| lua 模块 | 不需要 | 快符/排序在 `lua/sbxlm/` 下，但已无其它方案共用 |
 
 踩过的坑，改之前先看一眼：
 
@@ -205,7 +204,7 @@
 
 ## 七、已知问题
 
-1. `snow_sipin.custom.yaml` 引用了 `lua_processor@*sipin_filter` / `lua_filter@*sipin_filter`，但本目录下**没有该 lua 模块**（全仓仅这两行引用）。若四拼日志报组件缺失，把这两行注掉即可恢复默认略码处理器。
+1. `snow_sipin.custom.yaml` 引用 `lua_processor@*sipin_filter` / `lua_filter@*sipin_filter`，对应模块在 `lua/sipin_filter.lua`（四拼大写韵母筛选，依赖 `lua/snow/snow.lua`），不要误删。
 2. `radical_sipin.txt` / `radical_sanpin.txt` 不在目录内，部首辅码会退化为空映射（`shape_filter` 不会报错，只是没有部首数据）。
 3. `Control+i` 在个别环境可能被识别为 Tab；若下移无效，把 `super_sequence/down` 换成别的组合键。
 4. `Control+u` 若被编辑器用于清空输入，仅在「有候选且 ≥3 码」时被排序抢占。

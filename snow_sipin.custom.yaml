@@ -1,0 +1,55 @@
+patch:
+
+  speller/delimiter: " '"
+  # 引号已明确分词，含引号时按音节顺序补码，避免回头补码跨过分隔符。
+  speller/editor/match: "[^']+[bpmfdtnlgkhjqxzcsrywv][aeiou]{2}"
+  speller/popping:
+    # 单字、二字词、三字词：允许音节之间有引号，末尾仍须是元音。
+    - when: popping
+      match: "([bpmfdtnlgkhjqxzcsrywv][aeuio]{0,4}'*){0,2}[bpmfdtnlgkhjqxzcsrywv][aeiou]+"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 单字有辅助码。
+    - when: popping
+      match: "([bpmfdtnlgkhjqxzcsrywv][aeuio]{0,4})([aeiou]+|1[bpmfdtnlgkhjqxzcsrywv][aeiou]+)"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 四字词和多字词：允许内部引号，但不匹配末尾的引号。
+    - when: popping
+      match: "([bpmfdtnlgkhjqxzcsrywv][aeuio]{0,4}'*){3,}[bpmfdtnlgkhjqxzcsrywv][aeuio]{0,4}"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 大写参与编码。
+    - when: popping
+      match: "([bpmfdtnlgkhjqxzcsrywv][aeuio]{0,4}'*){3,}[bpmfdtnlgkhjqxzcsrywv][aeuio]{0,4}"
+      accept: "[BPMFDTNLGKHJQXZCSRYWV]"
+      strategy: append
+    # 顶标点：引号不算标点，末尾是引号时不触发顶功。
+    - match: ".*[^a-z0-9']"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 顶标点：引号不算标点；- = 留给翻页，; 留给次选（Shift+; 出来的 : 仍可顶屏）
+    - match: ".*[a-z0-9]"
+      accept: "[^a-z0-9' ;=-]"
+
+  translator/add_key: "Control+apostrophe" # 自由加词
+
+  key_binder/bindings/+:
+    - { when: has_menu, accept: semicolon, send: 2 }
+    # - { when: has_menu, accept: apostrophe, send: 3 }
+    # - { when: has_menu, accept: slash, send: 8 }
+    - { accept: minus, send: Page_Up, when: has_menu }
+    - { accept: equal, send: Page_Down, when: has_menu }
+
+  switches/@4/reset: 1
+  
+  engine/translators/+:
+    - table_translator@custom_phrase
+  custom_phrase:
+    dictionary: ""
+    user_dict: custom_phrase
+    db_class: stabledb
+    enable_completion: false
+    enable_sentence: false
+    initial_quality: 99
+    
+  
+  # 原位替换掉略码处理器，顺带把大写键腾出来
+  engine/processors/@3: lua_processor@*sipin_filter
+  filters/+: lua_filter@*sipin_filter

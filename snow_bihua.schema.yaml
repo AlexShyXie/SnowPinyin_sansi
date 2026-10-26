@@ -1,0 +1,72 @@
+# Rime schema
+# encoding: utf-8
+
+schema:
+  schema_id: snow_bihua
+  name: 冰雪笔画
+  version: "0.3.12"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+  description: |
+    用 eiuoa 输入笔画，用于反查
+
+switches:
+  - name: ascii_mode
+    reset: 0
+    states: [ 中文, 西文 ]
+
+engine:
+  processors:
+    - ascii_composer
+    - recognizer
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - table_translator
+  filters:
+    - lua_filter@*snow.bihua*filter
+
+speller:
+  alphabet: aeiou
+  delimiter: " '"
+  algebra:
+    - xform/[A-Z]+$//
+    - xlit/12345/eiuoa/
+
+translator:
+  dictionary: snow_bihua
+  prism: snow_bihua
+  enable_user_dict: false
+  enable_sentence: false
+  enable_completion: true
+  preedit_format:
+    - xlit/eiuoa/一丨丿丶乙/
+  comment_format:
+    - xform/[A-Z]+$//
+    - xlit/12345/eiuoa/
+
+menu:
+  page_size: 6
+
+punctuator:
+  import_preset: default
+
+key_binder:
+  import_preset: default
+
+recognizer:
+  import_preset: default
+
+__patch:
+  - snow_bihua.custom:/patch?

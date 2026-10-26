@@ -1,0 +1,11 @@
+node_modules
+main.js
+data.json
+.aider*
+patch-log/
+.codebuddy/
+*.userdb/
+*dict.yaml
+.codebuddy/
+build/
+snow_backup/

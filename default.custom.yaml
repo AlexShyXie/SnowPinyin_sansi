@@ -1,0 +1,14 @@
+patch:
+  schema_list:
+    - {schema: sbxh}
+    - {schema: snow_sipin}
+  ascii_composer/good_old_caps_lock: true
+  ascii_composer/switch_key:
+    Caps_Lock: clear
+    Control_L: noop
+    Control_R: noop
+    Eisu_toggle: clear
+    Shift_L: commit_code
+    Shift_R: inline_ascii
+  switcher/abbreviate_options: true
+  switcher/fold_options: true

@@ -1,0 +1,114 @@
+patch:
+  # ── 挂载处理器: 插在 key_binder 组件之前 ──────────────────
+  # 目的1: 快符需在 speller 之前拦下 "字母+/"
+  # 目的2: 排序需在 key_binder 重映射之前拿到原始 Ctrl+j/k/l/p
+  #        (声笔 sbxlm.yaml 里 Control+k/l/p 有原生绑定，非菜单态不受影响)
+  # 注: librime 的 @before N 只插入一个槽位，值写成列表会变成嵌套列表（组件失效），
+  #     所以两个 processor 各写一条（4=key_binder 原下标，5=紧跟其后）
+  engine/processors/@before 4: lua_processor@*sbxlm.wx_quick_symbol
+  engine/processors/@before 5: lua_processor@*sbxlm.wx_sequence*P
+
+  # ── 挂载过滤器: 放去重器之前，接管排序索引固定 ──────────────
+  engine/filters/@before 3: lua_filter@*sbxlm.wx_sequence*F
+
+  # ── 快符配置 ─────────────────────────────────────────────
+  # 字母+/ 快速上屏；q 键默认重复上一次上屏内容
+  # trigger 捕获组([a-z])即快符字母键，可自定义触发格式
+  quick_symbol_text:
+    trigger: "^([a-z])/$"
+    symkey:
+      q: "：“"        # 原 $ddcmd(：“,：“) 取第一个参数
+      w: "？"
+      e: "（"
+      r: "）"
+      t: "\t"         # 原 \t，YAML 双引号里用 \t 转义
+      y: "《"
+      u: "》"
+      a: "！"
+      s: "……"
+      d: "、"
+      f: "repeat"     # 原 <last.1>，重复上一次上屏
+      g: "·"
+      h: "《》"
+      j: '""'         # 半角双引号对，用单引号包最省事
+      k: "()"
+      l: "（）"
+      z: "“"
+      c: "”"
+      v: "——"
+      b: "　"         # 全角空格 U+3000
+      m: "@"
+      x: "_"
+      o: "「」"
+      p: "『』"
+      # i: 撤销      —— Rime 无法发键，删掉或改挂别的符号
+      # n: End       —— 同上
+
+  # ── 手动排序配置 ─────────────────────────────────────────
+  # 候选菜单中: Ctrl+j 上移 / Ctrl+k 下移 / Ctrl+l 重置 / Ctrl+p 置顶
+  # min_code_length: 码长不足此值的输入不参与排序（保护声笔 1~2 码简码位节奏）
+  # db_name: 排序记录存独立的 UserDb，不与声笔 sbxh.extended 词典冲突
+  super_sequence:
+    db_name: "sbxlm_sequence"
+    up: "Control+j"
+    down: "Control+k"
+    reset: "Control+l"
+    pin: "Control+p"
+    min_code_length: 3
+
+  key_binder/bindings/+:
+    - { when: has_menu, accept: semicolon, send: 2 }
+    # - { when: has_menu, accept: apostrophe, send: 3 }
+    # - { when: has_menu, accept: slash, send: 8 }
+    - { accept: minus, send: Page_Up, when: has_menu }
+    - { accept: equal, send: Page_Down, when: has_menu }
+
+  
+  engine/translators/+:
+    - table_translator@custom_phrase
+  custom_phrase:
+    dictionary: ""
+    user_dict: custom_phrase
+    db_class: stabledb
+    enable_completion: false
+    enable_sentence: false
+    initial_quality: 99
+
+  recognizer/patterns/history: ""
+  # ── 标点: 每个键直出单一符号 ──────────────────────────────
+  # 注意: 值类型必须与 sbxlm.yaml:/punctuator/half_shape 预设一致
+  #       (预设为列表的键只能给列表，为标量的键只能给标量)，否则部署报
+  #       "copy on write failed; incompatible node type"
+  punctuator/half_shape:
+    ',' : '，'
+    '.' : '。'
+    '<' : '《'
+    '>' : '》'
+    '/' : '/'
+    '?' : '？'
+    ';' : '；'
+    ':' : '：'
+    '''' : { pair: [ '‘', '’' ] }
+    '"' : { pair: [ '“', '”' ] }
+    '\' : '、'
+    '|' : '|'
+    '`' : [ "`", "```" ]
+    '~' : '~'
+    '!' : '！'
+    '@' : '@'
+    '#' : '#'
+    '%' : '%'
+    '$' : '¥'
+    '^' : '……'
+    '&' : '&'
+    '*' : '*'
+    '(' : '（'
+    ')' : '）'
+    '-' : '-'
+    '_' : ——
+    '+' : '+'
+    '=' : '='
+    '[' : '【'
+    ']' : '】'
+    '{' : '「'
+    '}' : '」'

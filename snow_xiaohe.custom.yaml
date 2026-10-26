@@ -60,6 +60,8 @@ patch:
     reset: "Control+l"
     pin: "Control+p"
     min_code_length: 3
+    # 被手动调过序/置顶的候选，注释里追加这个标记（改空串即关闭）
+    mark_symbol: "↕"
 
   # 开启补全：二字词打到第三码（如 mas 的 s）时也能出词组候选
   # 棱镜会把不完整的末音节展开成所有以它开头的音节（ma s → 马上、马术…）

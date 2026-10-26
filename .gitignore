@@ -9,3 +9,4 @@ patch-log/
 build/
 snow_backup/
 /user.yaml
+/installation.yaml

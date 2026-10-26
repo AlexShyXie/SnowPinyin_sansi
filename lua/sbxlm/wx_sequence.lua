@@ -5,6 +5,8 @@
 -- 快捷键: Control+j 上移 / Control+k 下移 / Control+l 重置 / Control+p 置顶
 --   作用对象: 当前编码下、候选菜单中的高亮候选
 -- 存储: UserDb（LevelDb）自建库，不与声笔 sbxh.extended 用户词典冲突
+-- 标记: 被手动调过序/置顶的候选，注释里追加 super_sequence/mark_symbol（默认 ↕）
+--   不想要标记就在该方案的 super_sequence 段配 mark_symbol: ""
 --
 -- 声笔适配说明:
 --   1. 码长不足 min_code_length（默认 3）的输入不参与排序
@@ -26,6 +28,10 @@ local DEFAULT_SEQ_KEY = {
     reset = "Control+l",
     pin = "Control+p",
 }
+
+-- 手动调过序/置顶过的候选在注释里追加的标记；
+-- 可用 super_sequence/mark_symbol 覆盖，配成空串即关闭标记
+local DEFAULT_MARK_SYMBOL = "↕"
 
 local MAX_SORT_CANDIDATES = 100
 local DB_POSITION_LIMIT = 500
@@ -718,16 +724,34 @@ end
 ------------------------------------------------------------
 local F = {}
 
+-- 追加式写候选注释：librime-lua 的 comment 可直接赋值，无需重包 Candidate
+-- （重包会丢 preedit 等属性）。与冰雪 snow.comment() 同语义，故不引入外部依赖。
+local function append_comment(candidate, comment)
+    if not candidate or not comment or comment == "" then
+        return candidate
+    end
+
+    local current = candidate.comment or ""
+    candidate.comment = current ~= "" and (current .. " " .. comment) or comment
+    return candidate
+end
+
 function F.init(env)
     local config = env.engine.schema.config
     env.page_size = config and config:get_int("menu/page_size") or 5
     env.min_code_len = config:get_int("super_sequence/min_code_length") or 3
+    -- 未配置 → 用默认标记；显式配成空串 → 关闭标记（get_string 缺失时返回 nil）
+    env.mark_symbol = config:get_string("super_sequence/mark_symbol")
+    if env.mark_symbol == nil then
+        env.mark_symbol = DEFAULT_MARK_SYMBOL
+    end
     get_sequence_state(env, config)
 end
 
 function F.fini(env)
     env.page_size = nil
     env.min_code_len = nil
+    env.mark_symbol = nil
     release_sequence_state(env)
 end
 
@@ -795,6 +819,12 @@ function F.func(input, env)
     apply_current_adjustment(state, adjust_code, ordered, records)
 
     for _, entry in ipairs(ordered) do
+        -- 只给「有手动排序记录」的候选打标记；records 已被本轮操作更新，
+        -- 所以刚用 Ctrl+u/i/p 调过的词会立刻带上标记，Ctrl+l 重置后消失。
+        local record = records[entry.sort_key]
+        if env.mark_symbol ~= "" and record and record.active then
+            append_comment(entry.cand, env.mark_symbol)
+        end
         yield(entry.cand)
     end
 

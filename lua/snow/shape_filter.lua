@@ -131,7 +131,7 @@ function filter.init(env)
   local config = env.engine.schema.config
   local dir = rime_api.get_user_data_dir() .. "/lua/snow/"
   local id = env.engine.schema.schema_id
-  if id == "snow_sipin" or id == "snow_sanpin" then
+  if id == "snow_sipin" or id == "snow_sanpin" or id == "snow_xiaohe" then
     bihua.init(env)
   end
   local shape_elements = config:get_string("translator/shape_elements") or "snow_bushou"
@@ -165,6 +165,16 @@ function filter.handle_candidate(text, shape_input, env)
       return radical_match(text, shape_input:sub(2), env)
     else
       return stroke_match(text, shape_input, env, sanpin_stroke_map)
+    end
+  elseif id == "snow_xiaohe" then -- 冰雪小鹤（三拼的小鹤键位版）
+    -- 调码与笔画码都是 aeiou，靠位置区分：第三码是调，之后的元音是笔画
+    if shape_input:len() == 0 and not rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]") then
+      return true, nil, nil
+    end
+    if shape_input:sub(1, 1) == "1" then
+      return radical_match(text, shape_input:sub(2), env)
+    else
+      return stroke_match(text, shape_input, env, sipin_stroke_map)
     end
   elseif id == "snow_jiandao" then -- 冰雪键道
     if is_pinyin or shape_input:len() > 0 or rime_api.regex_match(current, "[bpmfdtnlgkhjqxzcsrywe][a-z]([bpmfdtnlgkhjqxzcsrywe][a-z]?)?") then

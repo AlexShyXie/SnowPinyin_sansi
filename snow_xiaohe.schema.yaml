@@ -1,0 +1,225 @@
+# Rime schema
+# encoding: utf-8
+# 冰雪三拼的小鹤键位版
+#   声母：zh/ch/sh 并入 z/c/s，零声母用 v（与声笔小鹤一致）
+#   韵母：小鹤双拼韵码（占满 26 键）
+#   声调：第 3 码，a/e/i/o/u 表示 1/2/3/4/5 声
+#   顶功：两码（声韵）后接声码不顶，保证「马上 = mash」
+
+__include: snow_pinyin.schema.yaml:/
+
+schema:
+  schema_id: snow_xiaohe
+  name: 冰三小鹤
+  version: "0.1.0"
+  author:
+    - 谭淞宸 <i@tansongchen.com>
+    - 移植：小鹤键位
+  description: |
+    冰雪三拼的小鹤键位版
+    带调拼音词顶功输入方案
+    声母和韵母键位与声笔小鹤相同
+  dependencies:
+    - snow_pinyin
+    - snow_bihua
+    - snow_bushou
+
+engine:
+  processors:
+    - lua_processor@*snow.statistics*processor
+    - ascii_composer
+    - lua_processor@*snow.shape_processor
+    - lua_processor@*snow.select_character
+    - lua_processor@*snow.popping
+    - recognizer
+    - lua_processor@*snow.user_dict
+    - key_binder
+    - speller
+    - punctuator
+    - selector
+    - navigator
+    - express_editor
+  segmentors:
+    - ascii_segmentor
+    - matcher
+    - abc_segmentor
+    - affix_segmentor@stroke
+    - affix_segmentor@pinyin
+    - punct_segmentor
+    - fallback_segmentor
+  translators:
+    - punct_translator
+    - lua_translator@*snow.table_like*t12
+    - lua_translator@*snow.table_like*jianpin
+    - table_translator@stroke
+    - script_translator@pinyin
+    - lua_translator@*snow.datetime
+    - lua_translator@*snow.statistics*translator
+    - lua_translator@*snow.number
+    - lua_translator@*snow.calculator
+    - history_translator
+  filters:
+    - lua_filter@*snow.placeholder
+    - lua_filter@*snow.bihua*filter
+    - reverse_lookup_filter@lookup_pinyin
+    - reverse_lookup_filter@lookup_xiaohe
+    - lua_filter@*snow.fix
+    - lua_filter@*snow.shape_filter
+    - lua_filter@*snow.postpone
+    - uniquifier
+    - simplifier
+    - lua_filter@*snow.hint
+    - lua_filter@*snow.unicode
+
+xiaohe_algebra:
+  # 全拼还原：j/q/x/y 后的 u 实为 ü
+  - xform/(?<=[jqxy])u(e?\d)/v$1/
+  # 兼用 u 键：j/q/x/y 后拼音里没有真 u（ju/qu/xu/yu 都是 ü），故 ü 打 v 或 u 都行
+  # 需 = xv = xu；n/l 后仍需 v（路 lu / 绿 lv、努 nu / 女 nv）
+  - derive/(?<=[jqxy])v(?=\d)/u/
+  # 零声母：a/o/e（及 ng）起头的音节补 V
+  # 先用大写，避免被下面的 [uv]an / [uv]e 等韵母规则连声码一起吃掉，末了再转小写
+  - xform/(^| )([aoe])/$1V$2/
+  - xform/(^| )ng(?=\d)/$1Vng/
+  # 声母：zh/ch/sh 并入 z/c/s
+  - xform/zh/z/
+  - xform/ch/c/
+  - xform/sh/s/
+  # 韵母：小鹤键位，长韵母在前，避免被短韵母截断
+  - xform/[iu]ang(?=\d)/l/
+  - xform/ang(?=\d)/h/
+  - xform/(ing|uai)(?=\d)/k/
+  - xform/i?ong(?=\d)/s/
+  - xform/[uv]an(?=\d)/r/
+  - xform/ian(?=\d)/m/
+  - xform/an(?=\d)/j/
+  - xform/iao(?=\d)/n/
+  - xform/(ia|ua)(?=\d)/x/
+  - xform/ie(?=\d)/p/
+  - xform/in(?=\d)/b/
+  - xform/iu(?=\d)/q/
+  - xform/ui(?=\d)/v/
+  - xform/ai(?=\d)/d/
+  - xform/ao(?=\d)/c/
+  - xform/ou(?=\d)/z/
+  - xform/ei(?=\d)/w/
+  - xform/eng(?=\d)/g/
+  - xform/en(?=\d)/f/
+  - xform/un(?=\d)/y/
+  - xform/[uv]e(?=\d)/t/
+  - xform/u?o(?=\d)/o/
+  - xform/er(?=\d)/r/
+  # 零声母的 ng（嗯）才有整段替换之意；neng 经 eng→g 后也会变成 ng 结尾，
+  # 若不加 lookbehind 限定 V 标记，会把「能」的声母 n 一起吃掉（neng2 → ge），
+  # 造成所有含 neng 的字词都查不到，所以只处理上面补过 V 的那一份
+  - xform/(?<=V)ng(?=\d)/g/
+  # 声调：1=i 2=e 3=u 4=a 5=o（与冰雪四拼一致）
+  - xlit/12345/ieuao/
+  # 零声母标记转小写
+  - xlit/V/v/
+
+jianpin:
+  dictionary: snow_pinyin
+  prism: snow_xiaohe_jianpin
+  packs:
+    - snow_pinyin.base
+    - snow_pinyin.ext
+    - snow_pinyin.tencent
+    - snow_pinyin.user
+
+speller:
+  alphabet: bpmfdtnlgkhjqxzcsrwyvaeiou
+  initials: bpmfdtnlgkhjqxzcsrywv
+  delimiter: " "
+  shape:
+    - match: "[bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]?"
+      accept: "1"
+    - match_shape: "1"
+      accept: "[a-z]"
+    - match: "[bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]"
+      accept: "[aeiou]"
+    - match_shape: ".+"
+      accept: "[aeiou]"
+  editor:
+    accept: "[aeiou]"
+    match: ".+[bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]{2}"
+  popping:
+    # 单字：声韵调（及之后的笔画辅码）后接声码 → 顶
+    - when: popping
+      match: "[bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]+"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 二字词：声韵声韵（+调调）后接声码 → 顶
+    - when: popping
+      match: "[bpmfdtnlgkhjqxzcsrywv][a-z][bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]*"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 简拼（三字及以上）
+    - when: popping
+      match: "[bpmfdtnlgkhjqxzcsrywv]{2,}[aeiou]+"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 四字及以上
+    - when: popping
+      match: "[bpmfdtnlgkhjqxzcsrywv]{4,}[aeiou]*"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 大写参与编码
+    - when: popping
+      match: "[bpmfdtnlgkhjqxzcsrywv][a-z]{3,}"
+      accept: "[BPMFDTNLGKHJQXZCSRYWV]"
+      strategy: append
+    # 顶标点
+    - match: ".*[^a-z0-9]"
+      accept: "[bpmfdtnlgkhjqxzcsrywv]"
+    # 标点大写顶
+    # 排除 ; = -：这三个键留给 key_binder（; 次选、=/- 翻页），Shift+; 出来的 : 仍可顶屏
+    - match: ".*[a-z0-9]"
+      accept: "[^a-z0-9 ;=-]"
+  algebra:
+    __include: /xiaohe_algebra
+    __append:
+      # 字母音节码：元音字母用零声母 v + 该字母为韵码，辅音字母用该字母为声码 + 韵码 e，
+      # 末位统一补轻声（调 5 = o），与冰雪三拼的字母音节码约定保持一致（辅音字母是该字母、
+      # 元音字母都是 v），简拼棱镜需与本方案一致，不能复用 snow_jiandao_jianpin
+      - xform/~{1,2}([aeiouv])/v$1o/
+      - xform/~{1,2}([bpmfdtnlgkhjqxzcsryw])/$1eo/
+      # 简拼
+      - abbrev/^([a-z]).+$/$1/
+      # 无声调
+      - derive/[aeiou]$//
+
+lookup_xiaohe:
+  tags: [pinyin]
+  overwrite_comment: true
+  dictionary: snow_pinyin
+  comment_format:
+    __include: /xiaohe_algebra
+
+__patch:
+  - patch
+  - snow_xiaohe.custom:/patch?
+
+patch:
+  switches/+:
+    - options: [fluid, popping]
+      states: [整句, 顶功]
+      reset: 1
+    - name: buffered
+      states: [结束, 缓冲]
+      reset: 0
+  translator/prism: snow_xiaohe
+  translator/preedit_format: null
+  translator/enable_schema_user_dict: true
+  translator/shape_elements: snow_bushou
+  translator/shape_mapping: "radical_sanpin.txt"
+  translator/t1_pattern: "[bpmfdtnlgkhjqxzcsrywv][a-z]?[aeiou]?"
+  # 第二字允许只打声码（3 码），这样打到第三码时也能出二字词候选
+  translator/t2_pattern: "[bpmfdtnlgkhjqxzcsrywv][a-z][bpmfdtnlgkhjqxzcsrywv][a-z]?[aeiou]{0,2}"
+  translator/jianpin_pattern: "[bpmfdtnlgkhjqxzcsrywv]{3,}[aeiou]{0,3}"
+  # 字母类：供 lua 使用，缺省时回落到冰雪四拼/三拼的键道字母类
+  translator/initial_keys: "[bpmfdtnlgkhjqxzcsrywv]"
+  translator/tone_keys: "[aeiou]"
+  # 一码时不提示简词（本方案的二简词是声声两码，不宜按调码逐个提示）
+  translator/hint_affix: ""
+  translator/enforce_shuangpin: "[bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]*"
+  translator/enforce_jianpin: "[bpmfdtnlgkhjqxzcsrywv][a-z][bpmfdtnlgkhjqxzcsrywv][a-z]?[aeiou]*"
+  key_binder/bindings/+:
+    - { when: always, accept: "Control+j", toggle: buffered }
+  menu/alternative_select_keys: null

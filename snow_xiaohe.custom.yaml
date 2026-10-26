@@ -1,0 +1,83 @@
+# 冰雪小鹤（snow_xiaohe）用户自定义补丁
+# 说明：本方案由冰雪三拼换用声笔小鹤键位而来
+#   声母：zh/ch/sh 并入 z/c/s，零声母用 v
+#   韵母：小鹤韵码（占满 26 键）
+#   声调：第 3 码，a/e/i/o/u 表示 1/2/3/4/5 声
+#   顶功：两码（声韵）后接声码不顶，所以「马上」打 mash 不会被顶开
+patch:
+  # ── 万象快符处理器 ────────────────────────────────────
+  # 必须插在 popping（本方案 processors 的 0-based 下标 4）之前：
+  # popping 的「标点大写顶」会把 / 当标点顶屏并直接上屏，快符就永远触发不到
+  engine/processors/@before 4: lua_processor@*sbxlm.wx_quick_symbol
+
+  # ── 快符配置 ─────────────────────────────────────────
+  # 字母 + / 快速上屏；q 键默认重复上一次上屏内容
+  # trigger 的捕获组 ([a-z]) 即快符字母键，可自定义触发格式
+  # 单字母是声母简码态，此拦截优先于顶屏，直接上屏快符映射并清码
+  quick_symbol_text:
+    trigger: "^([a-z])/$"
+    symkey:
+      q: "：“"        # 原 $ddcmd(：“,：“) 取第一个参数
+      w: "？"
+      e: "（"
+      r: "）"
+      t: "\t"         # 原 \t，YAML 双引号里用 \t 转义
+      y: "《"
+      u: "》"
+      a: "！"
+      s: "……"
+      d: "、"
+      f: "repeat"     # 原 <last.1>，重复上一次上屏
+      g: "·"
+      h: "《》"
+      j: '""'         # 半角双引号对，用单引号包最省事
+      k: "()"
+      l: "（）"
+      z: "“"
+      c: "”"
+      v: "——"
+      b: "　"         # 全角空格 U+3000
+      m: "@"
+      x: "_"
+      o: "「」"
+      p: "『』"
+      # i: 撤销      —— Rime 无法发键，删掉或改挂别的符号
+      # n: End       —— 同上
+
+  # ── 万象排序（自由调序）───────────────────────────────
+  # 处理器要排在 key_binder 之前：key_binder 原下标 7，上面快符用 @before 4 插入后
+  # 它变成 8，所以这里是 @before 8（且必须书写在 @before 4 之后，patch 按顺序累积）
+  # 过滤器放在 uniquifier（原下标 7）之前；fix 固顶在 4、排序在 7 → 手动排序优先于固顶
+  engine/processors/@before 8: lua_processor@*sbxlm.wx_sequence*P
+  engine/filters/@before 7: lua_filter@*sbxlm.wx_sequence*F
+
+  # 上下移改用 Ctrl+u / Ctrl+i，避开 Ctrl+j（toggle buffered）
+  # 排序记录存独立库，不与冰雪自己的用户词典、也不与声笔小鹤的排序库混用
+  super_sequence:
+    db_name: "snow_xiaohe_sequence"
+    up: "Control+u"
+    down: "Control+i"
+    reset: "Control+l"
+    pin: "Control+p"
+    min_code_length: 3
+
+  # 开启补全：二字词打到第三码（如 mas 的 s）时也能出词组候选
+  # 棱镜会把不完整的末音节展开成所有以它开头的音节（ma s → 马上、马术…）
+  # 若觉得候选变吵，改成 false 即可回到原行为
+  translator/enable_completion: true
+  key_binder/bindings/+:
+    - { when: has_menu, accept: semicolon, send: 2 }
+    # - { when: has_menu, accept: apostrophe, send: 3 }
+    # - { when: has_menu, accept: slash, send: 8 }
+    - { accept: minus, send: Page_Up, when: has_menu }
+    - { accept: equal, send: Page_Down, when: has_menu }
+
+  engine/translators/+:
+    - table_translator@custom_phrase
+  custom_phrase:
+    dictionary: ""
+    user_dict: custom_phrase
+    db_class: stabledb
+    enable_completion: false
+    enable_sentence: false
+    initial_quality: 99

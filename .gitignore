@@ -6,6 +6,6 @@ patch-log/
 .codebuddy/
 *.userdb/
 *dict.yaml
-.codebuddy/
 build/
 snow_backup/
+/user.yaml

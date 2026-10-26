@@ -7,6 +7,8 @@ local snow = require "snow.snow"
 ---@field translator Translator
 ---@field pattern string
 ---@field pattern2 string
+---@field tone_keys string
+---@field initial_keys string
 
 local t12 = {}
 
@@ -68,8 +70,12 @@ local jianpin = {}
 
 ---@param env TableLikeEnv
 function jianpin.init(env)
+  local config = env.engine.schema.config
   env.translator = Component.Translator(env.engine, "jianpin", "script_translator")
-  env.pattern = env.engine.schema.config:get_string("translator/jianpin_pattern") or "^.+$"
+  env.pattern = config:get_string("translator/jianpin_pattern") or "^.+$"
+  -- 字母类可由方案覆盖，缺省回落到冰雪三拼/四拼的键道字母类
+  env.tone_keys = config:get_string("translator/tone_keys") or "[viuoa]"
+  env.initial_keys = config:get_string("translator/initial_keys") or "[bpmfdtnlgkhjqxzcsrywe]"
 end
 
 ---@param input string
@@ -78,8 +84,8 @@ end
 function jianpin.func(input, segment, env)
   -- 多字词
   if rime_api.regex_match(input, env.pattern) then
-    local proxy = input:gsub("[viuoa]", "")
-    local buma = input:gsub("[bpmfdtnlgkhjqxzcsrywe]", "")
+    local proxy = input:gsub(env.tone_keys, "")
+    local buma = input:gsub(env.initial_keys, "")
     if buma:len() == 1 then
       proxy = ("%s?%s"):format(proxy, buma)
     elseif buma:len() == 2 then
@@ -102,7 +108,7 @@ function jianpin.func(input, segment, env)
     local translation = env.translator:query(proxy, segment)
     if translation then
       for candidate in translation:iter() do
-        if utf8.len(candidate.text) >= input:gsub("[viuoa]", ""):len() and candidate.type ~= "sentence" then
+        if utf8.len(candidate.text) >= input:gsub(env.tone_keys, ""):len() and candidate.type ~= "sentence" then
           yield(snow.prepare(candidate, proxy, true))
         end
       end

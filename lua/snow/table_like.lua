@@ -53,7 +53,13 @@ function t12.func(input, segment, env)
     if translation then
       for candidate in translation:iter() do
         if utf8.len(candidate.text) <= 2 then
-          yield(snow.prepare(candidate, proxy, true))
+          -- 全码（6 码）的代理码把调码重排成了「调₂调₁」，不再与输入左对齐，
+          -- 只覆盖一部分的补全候选（如 bcgoui 里的「包」只吃前 3 码）选中后
+          -- 会留下重排过的残余编码（oui），被 `^o.*$` 的表达式段接走。
+          -- 所以全码只放行吃满整条代理码的候选。
+          if input:len() ~= 6 or candidate._end - candidate._start == proxy:len() then
+            yield(snow.prepare(candidate, proxy, true))
+          end
         end
       end
     end
@@ -84,32 +90,20 @@ end
 function jianpin.func(input, segment, env)
   -- 多字词
   if rime_api.regex_match(input, env.pattern) then
+    -- 多字词只能拿声码串去查：声码本身就是 algebra 的简拼拼写（abbrev），
+    -- 是合法的查询串。此前用 `?` 顶替韵码拼出 hdl?e / h?ed?ol?e 之类，
+    -- 但 librime 的音节化（algo/syllabifier.cc）只做精确前缀匹配，
+    -- 不支持通配符，这些代理码一律解析失败，三字词全码与 4/5 码简码全查不到。
     local proxy = input:gsub(env.tone_keys, "")
-    local buma = input:gsub(env.initial_keys, "")
-    if buma:len() == 1 then
-      proxy = ("%s?%s"):format(proxy, buma)
-    elseif buma:len() == 2 then
-      proxy = ("%s?%s%s?%s"):format(
-        proxy:sub(1, 1),
-        buma:sub(2),
-        proxy:sub(2),
-        buma:sub(1, 1)
-      )
-    elseif buma:len() == 3 then
-      proxy = ("%s?%s%s?%s%s?%s"):format(
-        proxy:sub(1, 1),
-        buma:sub(2, 2),
-        proxy:sub(2, 2),
-        buma:sub(3, 3),
-        proxy:sub(3),
-        buma:sub(1, 1)
-      )
-    end
     local translation = env.translator:query(proxy, segment)
     if translation then
       for candidate in translation:iter() do
-        if utf8.len(candidate.text) >= input:gsub(env.tone_keys, ""):len() and candidate.type ~= "sentence" then
-          yield(snow.prepare(candidate, proxy, true))
+        if utf8.len(candidate.text) >= proxy:len() and candidate.type ~= "sentence" then
+          candidate = snow.prepare(candidate, proxy, true)
+          -- 调码被丢掉后代理码比输入短，候选只会覆盖前几个码，选中后会留下
+          -- 孤立编码（如 hdlee 选中后剩 ee）。补齐到整段，保证上屏即清空。
+          candidate._end = segment._end
+          yield(candidate)
         end
       end
     end

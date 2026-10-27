@@ -120,7 +120,11 @@ xiaohe_algebra:
 
 jianpin:
   dictionary: snow_pinyin
-  prism: snow_xiaohe_jianpin
+  # librime 部署只为每个方案的主翻译器（translator/prism）构建棱镜，
+  # 不会构建子翻译器自己的 prism，写别的名字会导致该棱镜文件不存在、
+  # 翻译器加载失败（三字词全码/简码全部查不到）。这里直接复用主棱镜，
+  # 二者由同一套 speller/algebra 生成，完全等价。
+  prism: snow_xiaohe
   packs:
     - snow_pinyin.base
     - snow_pinyin.ext

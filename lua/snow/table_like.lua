@@ -7,6 +7,7 @@ local snow = require "snow.snow"
 ---@field translator Translator
 ---@field pattern string
 ---@field pattern2 string
+---@field pattern3 string
 ---@field tone_keys string
 ---@field initial_keys string
 
@@ -18,6 +19,8 @@ function t12.init(env)
   env.translator = Component.Translator(env.engine, "translator", "script_translator")
   env.pattern = env.engine.schema.config:get_string("translator/t1_pattern") or "^.+$"
   env.pattern2 = env.engine.schema.config:get_string("translator/t2_pattern") or "^.+$"
+  -- 多字词简拼也占用 6 码以上的编码（四字简拼可达 7 码），兜底不能去抢它的位置
+  env.pattern3 = env.engine.schema.config:get_string("translator/jianpin_pattern")
 end
 
 ---@param input string
@@ -25,7 +28,8 @@ end
 ---@param env TableLikeEnv
 function t12.func(input, segment, env)
   -- 一字词
-  if rime_api.regex_match(input, env.pattern) or env.engine.context:get_option("fluid") == true then
+  local matched1 = rime_api.regex_match(input, env.pattern) or env.engine.context:get_option("fluid") == true
+  if matched1 then
     -- 代理码不是合法拼写时 query 返回 nil，这一路当作没有候选
     local translation = env.translator:query(input, segment)
     if translation then
@@ -44,7 +48,8 @@ function t12.func(input, segment, env)
     end
   end
   -- 二字词
-  if rime_api.regex_match(input, env.pattern2) then
+  local matched2 = rime_api.regex_match(input, env.pattern2)
+  if matched2 then
     local proxy = ("%s %s"):format(input:sub(1, 2), input:sub(3))
     if input:len() == 6 then
       proxy = ("%s%s %s"):format(input:sub(1, 2), input:sub(-1, -1), input:sub(3, -2))
@@ -60,6 +65,26 @@ function t12.func(input, segment, env)
           if input:len() ~= 6 or candidate._end - candidate._start == proxy:len() then
             yield(snow.prepare(candidate, proxy, true))
           end
+        end
+      end
+    end
+  end
+  -- 兜底：三拼的合法编码最长 6 码（二字词/三字词全码），再多打键时 t1、t2 失配，
+  -- jianpin 往往也接不住（只有纯声码+少量调码的简拼才匹配），菜单就彻底变空；
+  -- 而 popping 顶屏依赖 has_menu()，空菜单会让后续声码也顶不动，按键只能不断追加
+  -- （如 hcjlia 后再打键变成 hcjliaol），Esc 或退格之前完全无法继续输入。
+  -- 这里对这类失配长码直接用原始输入整句式查一次，保证始终有候选可顶、可上屏。
+  if not matched1 and not matched2 and not (env.pattern3 and rime_api.regex_match(input, env.pattern3)) then
+    local translation = env.translator:query(input, segment)
+    if translation then
+      for candidate in translation:iter() do
+        -- 原始输入只能解析出前面的一段（hcjliaol 只认得 hc + jl），候选跨度也就
+        -- 只覆盖这一段，不补齐的话选中后会留下 iaol 之类的孤立编码。补齐到整段，
+        -- 上屏即清空。单字补全词对长码没有意义，一并滤掉以免噪音。
+        if utf8.len(candidate.text) >= 2 then
+          candidate = snow.prepare(candidate, input, true)
+          candidate._end = segment._end
+          yield(candidate)
         end
       end
     end

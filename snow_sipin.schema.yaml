@@ -178,6 +178,12 @@ patch:
     - name: buffered
       states: [结束, 缓冲]
       reset: 0
+    # 自由加词（Ctrl+'）的状态提示：option add 由 lua/snow/user_dict.lua 置位，
+    # 开关表里没有这一项时前端没有文案可显示，加词全程静悄悄。这里只登记状态，
+    # 置位逻辑仍在 user_dict 里（进入 → true，写入或 Esc → false）。
+    - name: add
+      states: [结束, 加词]
+      reset: 0
   translator/prism: snow_sipin
   translator/preedit_format: null
   translator/enable_schema_user_dict: true

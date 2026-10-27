@@ -48,8 +48,3 @@ patch:
     enable_completion: false
     enable_sentence: false
     initial_quality: 99
-    
-  
-  # 原位替换掉略码处理器，顺带把大写键腾出来
-  engine/processors/@3: lua_processor@*sipin_filter
-  filters/+: lua_filter@*sipin_filter

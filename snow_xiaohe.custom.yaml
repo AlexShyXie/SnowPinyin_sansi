@@ -48,25 +48,32 @@ patch:
   # 处理器要排在 key_binder 之前：key_binder 原下标 7，上面快符用 @before 4 插入后
   # 它变成 8，所以这里是 @before 8（且必须书写在 @before 4 之后，patch 按顺序累积）
   # 过滤器放在 uniquifier（原下标 7）之前；fix 固顶在 4、排序在 7 → 手动排序优先于固顶
-  engine/processors/@before 8: lua_processor@*sbxlm.wx_sequence*P
-  engine/filters/@before 7: lua_filter@*sbxlm.wx_sequence*F
+  # engine/processors/@before 8: lua_processor@*sbxlm.wx_sequence*P
+  # engine/filters/@before 7: lua_filter@*sbxlm.wx_sequence*F
 
-  # 上下移改用 Ctrl+u / Ctrl+i，避开 Ctrl+j（toggle buffered）
-  # 排序记录存独立库，不与冰雪自己的用户词典、也不与声笔小鹤的排序库混用
-  super_sequence:
-    db_name: "snow_xiaohe_sequence"
-    up: "Control+u"
-    down: "Control+i"
-    reset: "Control+l"
-    pin: "Control+p"
-    min_code_length: 3
-    # 被手动调过序/置顶的候选，注释里追加这个标记（改空串即关闭）
-    mark_symbol: "↕"
+  # # 上下移改用 Ctrl+u / Ctrl+i，避开 Ctrl+j（toggle buffered）
+  # # 排序记录存独立库，不与冰雪自己的用户词典、也不与声笔小鹤的排序库混用
+  # super_sequence:
+    # db_name: "snow_xiaohe_sequence"
+    # up: "Control+u"
+    # down: "Control+i"
+    # reset: "Control+l"
+    # pin: "Control+p"
+    # min_code_length: 3
+    # # 被手动调过序/置顶的候选，注释里追加这个标记（改空串即关闭）
+    # mark_symbol: "↕"
 
   # 开启补全：二字词打到第三码（如 mas 的 s）时也能出词组候选
   # 棱镜会把不完整的末音节展开成所有以它开头的音节（ma s → 马上、马术…）
   # 若觉得候选变吵，改成 false 即可回到原行为
   translator/enable_completion: true
+
+  # 三码（声码 + 韵码 + 次字声码，如 mas）不记入 postpone 的「已出现首选」，
+  # 这样同一个二字词打满四码（如 mash）时不会被后置到第 2 位。
+  # 二码（单字在长码让位）、四码及以上的让位行为保留；postpone 功能本身不关闭。
+  # 删除本行即回退到原行为。
+  translator/disable_postpone_pattern: "^[bpmfdtnlgkhjqxzcsrywv][a-z][bpmfdtnlgkhjqxzcsrywv]$"
+
   key_binder/bindings/+:
     - { when: has_menu, accept: semicolon, send: 2 }
     # - { when: has_menu, accept: apostrophe, send: 3 }

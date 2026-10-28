@@ -59,6 +59,13 @@ local function stroke_match(text, partial_code, env, map)
   end
   -- 未收录的字不做笔画过滤；已收录但没有启用任何来源的字不能匹配。
   local elements, known = bihua.codes(text, env)
+  -- 笔画库只收单字，多字词整词查不到（known = false）时若就此放过，二字词/三字词
+  -- 的辅码就形同失效。这里退回首字笔画，按首字笔顺连续匹配（u = 首字第 1 笔，
+  -- ue = 首字前两笔），语义与单字辅码一致。首字也无记录时仍返回 known = false，
+  -- 保留候选而不是误杀。
+  if not known and (utf8.len(text) or 0) > 1 then
+    elements, known = bihua.codes(snow.sub(text, 1, 1), env)
+  end
   local match = partial_code == "" or not known
   ---@type string[]
   local codes = {}

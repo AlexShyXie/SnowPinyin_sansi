@@ -142,6 +142,13 @@ speller:
       accept: "[a-z]"
     - match: "[bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]"
       accept: "[aeiou]"
+    # 二字词全码是 6 码（声₁韵₁声₂韵₂调₂调₁），三字词全码同为 6 码
+    # （声₁声₂声₃调₃调₁调₂），之后接的元音一律算笔画辅码。
+    # 缺少这条时这些键会落进 speller 拼成 7 码以上的非法编码，三条 pattern
+    # 全部失配、菜单变空，而顶功依赖 has_menu()，空菜单连顶屏都做不到
+    # （见 README「长码不再变砖」）。
+    - match: "[bpmfdtnlgkhjqxzcsrywv][a-z][bpmfdtnlgkhjqxzcsrywv][a-z][aeiou]{2}"
+      accept: "[aeiou]"
     - match_shape: ".+"
       accept: "[aeiou]"
   editor:

@@ -74,7 +74,14 @@ function t12.func(input, segment, env)
   -- 而 popping 顶屏依赖 has_menu()，空菜单会让后续声码也顶不动，按键只能不断追加
   -- （如 hcjlia 后再打键变成 hcjliaol），Esc 或退格之前完全无法继续输入。
   -- 这里对这类失配长码直接用原始输入整句式查一次，保证始终有候选可顶、可上屏。
-  if not matched1 and not matched2 and not (env.pattern3 and rime_api.regex_match(input, env.pattern3)) then
+  -- 兜底条件与 `speller/popping` 的 `.{7,}` 兜底顶屏规则对齐：jianpin_pattern 只看
+  -- 形状，但它实际查的是去掉调码后的纯声码串，像「二字词全码 + 辅码」（fglkeau）
+  -- 这种 7 码恰好落在 `[声]{3,}[aeiou]{0,3}` 里，形状匹配却查不到任何多字候选，
+  -- 兜底再被抑制菜单就彻底空了。所以 7 码以上一律兜底，简拼串无法音节化，
+  -- 整句查询自然返回空，对正常简拼没有副作用。
+  local overlong = rime_api.regex_match(input, ".{7,}")
+  if not matched1 and not matched2 and
+      (overlong or not (env.pattern3 and rime_api.regex_match(input, env.pattern3))) then
     local translation = env.translator:query(input, segment)
     if translation then
       for candidate in translation:iter() do

@@ -80,6 +80,7 @@ patch:
     # - { when: has_menu, accept: slash, send: 8 }
     - { accept: minus, send: Page_Up, when: has_menu }
     - { accept: equal, send: Page_Down, when: has_menu }
+  menu/page_size: 3
 
   engine/translators/+:
     - table_translator@custom_phrase

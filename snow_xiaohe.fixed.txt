@@ -65,7 +65,7 @@ sz	收 守
 se	色 涩
 sj	山
 sk	帅
-sd	晒
+sd	晒 收到
 su	数
 si	时 室 寺
 so	说
@@ -348,7 +348,7 @@ yr	元 园
 yy	云
 ys	用
 yc	要
-zd	再
+zd	再 知道
 za	咋
 zw	贼
 
@@ -378,7 +378,7 @@ py	拼音
 rm	人们
 rq	日期
 rx	热线
-sm	司马
+sm	什么
 sq	索取
 tx	同学
 tq	天气
@@ -1123,7 +1123,7 @@ vrld	而来 二来
 vrng	而能
 vrqi	而起
 vrsh	而上
-vrsi	而死
+vrsi	而是
 vrtj	而谈
 vrxb	而新
 vrxk	而行

@@ -126,11 +126,22 @@ function jianpin.func(input, segment, env)
     -- 是合法的查询串。此前用 `?` 顶替韵码拼出 hdl?e / h?ed?ol?e 之类，
     -- 但 librime 的音节化（algo/syllabifier.cc）只做精确前缀匹配，
     -- 不支持通配符，这些代理码一律解析失败，三字词全码与 4/5 码简码全查不到。
-    local proxy = input:gsub(env.tone_keys, "")
+    -- 声码串必须逐码用空格隔开，否则音节化会把它切成更长的完整音节：
+    -- lthy 被切成 lt|hy（lt=lüe、hy=hun，完整音节的权重高于四个单字母缩写
+    -- 拼写），查到的全是二字词，又被下面的字数过滤全部滤掉，于是四字简拼
+    -- 一个候选都不出（实测 lthy 只出「略混」）。加空格后音节化只能按单字母
+    -- 缩写切分，四个声码即四个音节，才能查到「狼吞虎咽」。同文件 :41 二码
+    -- 分支的代理码 "z d" 是同一手法。
+    local codes = input:gsub(env.tone_keys, "")
+    if codes == "" then
+      return
+    end
+    local proxy = codes:gsub("[a-z]", "%0 "):gsub("%s+$", "")
     local translation = env.translator:query(proxy, segment)
     if translation then
       for candidate in translation:iter() do
-        if utf8.len(candidate.text) >= proxy:len() and candidate.type ~= "sentence" then
+        -- 字数下限用声码个数（codes:len()），不能用加了空格的 proxy:len()
+        if utf8.len(candidate.text) >= codes:len() and candidate.type ~= "sentence" then
           candidate = snow.prepare(candidate, proxy, true)
           -- 调码被丢掉后代理码比输入短，候选只会覆盖前几个码，选中后会留下
           -- 孤立编码（如 hdlee 选中后剩 ee）。补齐到整段，保证上屏即清空。

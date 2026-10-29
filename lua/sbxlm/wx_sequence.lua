@@ -42,7 +42,10 @@ local MAX_VERSION = math.floor((C_MAX - TOMBSTONE_SLOT) / POSITION_BASE)
 
 local RECORD_SEPARATOR = " \t"
 
--- 声笔特殊段 tag: 反查、以词定字、标点段不参与排序
+-- 特殊段 tag: 反查、以词定字、标点段不参与排序
+-- 冰雪三拼（snow_xiaohe）用的是 pinyin（a… 拼音反查）、stroke（u… 笔画反查）、history（i 重复上屏），
+-- 模块没有定义 tags_match，挂载时也未加 @tag，所以会对所有段生效；
+-- 少了下面三个，反查/笔画/历史的候选也会被写进排序库并带上 ↕。
 local SPECIAL_TAGS = {
     bihua = true,  -- 笔画反查
     sbyp = true,   -- 双拼反查
@@ -50,6 +53,9 @@ local SPECIAL_TAGS = {
     zhlf = true,   -- 联想？
     sbzdy = true,  -- 以词定字
     punct = true,  -- 标点段
+    pinyin = true, -- 冰雪：a… 拼音反查
+    stroke = true, -- 冰雪：u… 笔画反查
+    history = true,-- 冰雪：i 重复上屏
 }
 
 ------------------------------------------------------------

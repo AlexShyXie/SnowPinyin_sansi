@@ -79,13 +79,15 @@
 2. **三码出词组候选**：放宽 `t2_pattern` / `enforce_jianpin`（第二字允许只打声码）+ 开 `translator/enable_completion`，打到第三码（如 `mas`）也能出二字词。
 3. **顶标点排除 `;=-`**：`speller/popping` 的「标点大写顶」原为 `[^a-z0-9 ]`，会把 `; - =` 当标点顶屏，压住 key_binder 的次选/翻页绑定。
 4. **万象快符**：`sbxlm.wx_quick_symbol` 挂在 popping 之前（`@before 4`），`字母 + /` 直接上屏符号（见 `quick_symbol_text`）。
-5. **万象排序**：`sbxlm.wx_sequence`，处理器 `@before 8`（在 key_binder 前）、过滤器 `@before 7`（在 uniquifier 前，晚于 `snow.fix`，所以手动排序优先于固顶）。
+5. **排序与固定已合并**：原先两套手动调序并存（万象 `sbxlm.wx_sequence` 用 ↕ 标记、写独立库 `snow_xiaohe_sequence.userdb`；冰雪固定用 📌/📍、写 `snow.user_dict`），功能重复。现已**卸载万象排序**的两处挂载与 `super_sequence` 段，只留冰雪固定一套，并给 `lua/snow/user_dict.lua` 补了三个可选能力（默认关闭，四拼不受影响）：`translator/pin_key: "Control+p"` 置顶、`translator/alt_reset_key: "Control+l"` 重置、`translator/move_unfixed: true` 让 `Ctrl+[` / `]` 对未固定的候选直接生效。键位见「键位」表与「固定与调序」。
 6. **固顶词表扩充**：`snow_xiaohe.fixed.txt` 现约 4100 条，含一码、二简词、三简二字词 790 条、三简三字词 1945 条、四码固顶 983 条。尽量贴近小鹤音形的手感。
 7. **修复多字词（三字词）翻译器不工作**：`jianpin` 原来指定独立棱镜 `snow_xiaohe_jianpin`，而 librime 部署只为方案主翻译器构建棱镜，该棱镜文件从未生成，翻译器加载失败——三字词 3 码靠 `fixed.txt` 兜底，4/5/6 码全查不到。现改为复用主棱镜 `snow_xiaohe`；同时 `table_like` 的代理查询去掉了 librime 不支持的 `?` 通配（原为 `hdl?e` / `h?ed?ol?e`），改用纯声码串查询，并把候选跨度补齐到整段（否则选中后残留的孤立编码会被 `^o.*$` 的表达式段接走）。
 8. **二字词全码只出整词**：`table_like` 的 6 码代理会把调码重排成「调₂调₁」，不再与输入左对齐，原先放行的部分跨度候选（如 `bcgoui` 里的「包」只吃前 3 码）选中后会留下 `oui`，变成「表达式」候选。现在 6 码只放行吃满整条代理码的候选。
 9. **长码不再变砖**：三拼最长只认 6 码，再多打键三条 pattern 全失配、菜单变空，而顶功依赖 `has_menu()`，空菜单连顶屏都做不到，编码只能越拖越长。`table_like` 现在对失配长码用原始输入做整句式兜底查询（候选跨度补齐到整段），`speller/popping` 增加 `.{7,}` 接声码的兜底顶屏规则。
 10. **二字词/三字词也能用笔画辅码**：`speller/shape` 原先只有「单字 3 码（声韵调）后接元音 = 笔画」这条规则，二字词全码（6 码 `声₁韵₁声₂韵₂调₂调₁`）之后没有任何规则接管，第 7 个元音键会落进 speller 拼成 7 码非法编码——`t1`/`t2` 失配但 `jianpin_pattern`（`[声]{3,}[aeiou]{0,3}`）恰好形状匹配，兜底被抑制、菜单直接变空；第 8 码起元音数超出 `{0,3}`，兜底才恢复，于是出现「7 码空、8 码又有」的怪象。现在补上「6 码全码后接元音 = 笔画」的规则，并让 `shape_filter` 在多字词整词查不到笔画时退回首字笔画，按首字笔顺筛选（如 `fglkeau` 用「凤」的首笔丿筛掉其余二字词）。
 11. **四字简拼能出成语**：`jianpin` 通道原先把声码串原样交给音节化器，`lthy` 会被切成 `lt|hy`（`lt`=lüe、`hy`=hun，两个**完整音节**的权重高于四个单字母缩写拼写），查到的全是二字词，又被 `utf8.len(candidate.text) >= proxy:len()` 全部滤掉，四字成语一个候选都不出——实测 `lthy` 只出「略混」接着就是单字。现在代理码**逐码加空格**（`lthy` → `l t h y`），强制按单字母缩写切分，四个声码即四个音节，才能查到「狼吞虎咽」。2 码分支的代理码 `z d`（`lua/snow/table_like.lua:41`）本来就是同一手法。
+12. **关闭自动调频（盲打确定性）**：`translator/enable_user_dict: false` + `jianpin/enable_user_dict: false`（`snow_xiaohe.custom.yaml`）。`table_like` 用 `Component.Translator` 实例化的两个 script_translator（`lua/snow/table_like.lua:19`、`:112`）默认开着 librime 用户词典，会随使用提权——表现就是「意志 `viziaa` 打几次后跳到 5 码 `vizia`、再跳到 4 码 `vizi` 首选」，短码位置一路迁移，盲打每次都得看候选；又因为 `postpone` 会把「已在短码当过首选」的词在长码后置，肌肉记忆打 6 码反而要退格。关掉后词序只由词库权重 + 固顶表 + 手动排序决定，一个词在几码、第几位永久固定。**注意** `translator/enable_schema_user_dict: true` 必须保留：那是冰雪自有的固顶/调序/造词库（`Ctrl+;` 固定、`Ctrl+p` 置顶、`Ctrl+[`/`]` 移动、`Ctrl+l`/`Ctrl+\` 重置、`Ctrl+'` 造词），与 librime 的用户词典互不相关。
+13. **自动造词（拆字 + 缓冲）**：`lua/snow/auto_phrase.lua`，用 `engine/filters/+` 追加到 filters 末尾（**不能**用 `@before N`，会挤掉其它 `@before` 挂载的下标）。关闭 librime 用户词典后拆字造词、缓冲造词都记不住新词，这个模块在 `commit_notifier` 里把「一次输入内选了 ≥2 个候选」拼成的词写进**冰雪自有用户词典**，由 `snow.fix` 置顶呈现（📍）——不引入任何调频，位置可用 `Ctrl+;` / `Ctrl+p` / `Ctrl+[` `Ctrl+]` 自行调整。顶功逐字上屏每段单独 commit，不触发。配置在 `snow_xiaohe.custom.yaml` 的 `auto_phrase` 段（`enable` / `min_code_length` / `max_code_length` / `max_phrase_length` / `probe`）。详见「造词」。
 
 ### 键位
 
@@ -94,21 +96,35 @@
 | `;` | 次选 |
 | `-` / `=` | 翻页 |
 | `字母 + /` | 快符（如 `q/` 重复上次上屏、`s/` 出……） |
-| `Ctrl+u` / `Ctrl+i` | 排序：上移 / 下移 |
-| `Ctrl+p` / `Ctrl+l` | 排序：置顶 / 重置该编码 |
-| `Ctrl+;` | 固定候选（📌） |
+| `Ctrl+p` | 置顶到第 1 位（已置顶再按一次取消） |
+| `Ctrl+[` / `Ctrl+]` | 上移 / 下移（未固定的候选也能直接移） |
+| `Ctrl+;` | 固定 / 取消固定到当前位（📌） |
+| `Ctrl+l` / `Ctrl+\` | 重置该编码 |
 | `Ctrl+j` | toggle buffered |
 | `Ctrl+'` | 自由加词（再按一次确认） |
 
 ### 造词（人名、词库里没有的词）
 
-三拼的**二字词全码把调码重排成了「调₂调₁」**（浩江 = 声₁韵₁ 声₂韵₂ 调₂ 调₁ = `hc` `jl` `i` `a` = `hcjlia`），代理码随之变成 `hca jli`，与输入不再左对齐，所以 **6 码拆不出单字、不支持「选择造词」**（四拼那种 `bsiaie` 选「冰」再选「四」的玩法只在四拼成立；官方也写明三拼只支持缓冲造词）。词库里没有的词用下面任一种方式造：
+三拼的**二字词全码把调码重排成了「调₂调₁」**（浩江 = 声₁韵₁ 声₂韵₂ 调₂ 调₁ = `hc` `jl` `i` `a` = `hcjlia`），代理码随之变成 `hca jli`，与输入不再左对齐，所以 **6 码拆不出单字**（四拼那种 `bsiaie` 选「冰」再选「四」的玩法只在四拼成立）。但 **4 码、5 码可以拆**：4/5 码的代理码与输入左对齐（`lua/snow/table_like.lua:51-71` 会放行只覆盖前一段的单字候选），选中首字后剩下的正好是第二字的全码。
 
-| 方式 | 操作 | 说明 |
-|---|---|---|
-| **拆字造词（推荐）** | 打到 **5 码**（声₁韵₁声₂韵₂调₂，**不带调₁**）时拆：`hcjli` → 选「浩」→ 剩下 `jli` 正好是「江」的全码 → 选「江」 | 5 码的代理 `hc jli` 与输入左对齐，选中首字后剩下的就是第二字的全码；依次确认后一次上屏，用户词典即记住「浩江」，之后打 `hcjlia` 直接出词 |
-| **缓冲造词** | `Ctrl+j` 开缓冲 → 逐字打码（每字满码后再打下字的声码会自动顶入缓冲、不上屏）→ 空格一次上屏 | 官方三拼支持的自动造词方式 |
-| **自由加词** | `Ctrl+'` 进入加词 → 手动打出要加的内容 → 再按 `Ctrl+'` 确认 | 写入方案用户词典（`snow.user_dict`），不受编码规则限制 |
+> ⚠️ **已关闭自动调频**（见定制清单第 12 条）。原先的拆字造词、缓冲造词靠 librime 用户词典记忆，关闭后曾一度失效；现已由 `lua/snow/auto_phrase.lua` **补回**：上屏时把一次输入内选中的几个候选拼成词，写进**冰雪自有用户词典**（与 `Ctrl+'` 造词完全同款），由 `snow.fix` 置顶呈现（带 📍）。写自有库意味着**不引入任何调频**——造出来的词位置固定，且 `Ctrl+;` 固定、`Ctrl+p` 置顶、`Ctrl+[`/`Ctrl+]` 移动、`Ctrl+l`/`Ctrl+\` 撤销全都适用。
+
+| 方式 | 状态 | 操作 | 说明 |
+|---|---|---|---|
+| **拆字造词（推荐）** | 可用 | 打到 4 码或 5 码时拆：`hcjli` → 选「浩」→ 剩下 `jli` 正好是「江」的全码 → 选「江」 | 依次确认后一次上屏即成词；6 码不能拆（代理码已重排，见上文） |
+| **缓冲造词** | 可用 | `Ctrl+j` 开缓冲 → 逐字打全码（每字满码后被下字的声码顶入缓冲不上屏）→ 空格一次上屏 | 打 `yia` `zia`，按词库规则重排成 `yiziaa` |
+| **自由加词** | 可用 | `Ctrl+'` 进入加词 → 手动打出要加的内容 → 再按 `Ctrl+'` 确认 | 不受编码规则限制，任意字串都能挂到任意码上 |
+| **手改固顶表** | 可用 | 编辑 `<用户数据目录>/snow_xiaohe.fixed.txt` | 同码只能一行、多词空格分隔；重新部署或切走再切回即生效 |
+
+**造词记的是哪个码** = 你造词时打到的那个码（按词库规则规范化后）。不会自动派生简码，因此不会抢占你没允许的码位：
+
+- 4 码拆字 → 记 4 码（`vizi`）；5 码拆字 → 记 5 码（`hcjli`）
+- 缓冲打全码 → 重排成「声₁韵₁ 声₂韵₂ **调₂ 调₁**」后记 6 码（`yia` + `zia` → `yiziaa`），所以之后打 6 码直接出词。注意这里记的**不是按键串**（按键串是 `yiazia`，不是合法词码）
+- 想让别的码长也出这个词：切到那个码长按 `Ctrl+p`（置顶，写独立排序库）或 `Ctrl+;`（固顶，写自有库），或再 `Ctrl+'` 造一次 —— 位置由你定
+
+顶功逐字上屏**不会**造词（每次只 commit 一段，凑不满两个选中候选），连续打单字不会把无关的字串误记成词。误造的词按 `Ctrl+\` 隐藏。
+
+想彻底关掉自动造词：把 `snow_xiaohe.custom.yaml` 里 `auto_phrase/enable` 改成 `false`（或删掉 `engine/filters/+` 那两行）重新部署即可，已造的词不受影响。
 
 ### 长码不再变砖
 
@@ -187,19 +203,31 @@
 
 | 键 | 作用 |
 |---|---|
-| `Ctrl+;` | 固定/取消固定当前候选到当前位置，显示 📌（上限第 18 位） |
+| `Ctrl+;` | 固定 / 取消固定当前候选到当前位置，显示 📌（上限第 18 位） |
+| `Ctrl+p` | 置顶到第 1 位；已经固定在第 1 位时再按一次 = 取消固定 |
+| `Ctrl+[` / `Ctrl+]` | 上移 / 下移。默认只对已固定项生效；本方案配了 `translator/move_unfixed: true`，**未固定的候选也能直接移**（会自动写入该位置） |
+| `Ctrl+l` / `Ctrl+\` | 重置该编码下所有固定（标记为隐藏，不是删除） |
 | `Ctrl+'` | 自由加词（再按一次确认）；开始显示「加词」提示，写入或 Esc 后显示「结束」 |
-| `Ctrl+[` / `Ctrl+]` | 已固定项上移 / 下移 |
-| `Ctrl+\` | 重置该编码下所有固定 |
 
-五个键都可用 `translator/fix_key｜add_key｜up_key｜down_key｜reset_key` 覆盖。
+键位可用 `translator/fix_key｜pin_key｜up_key｜down_key｜reset_key｜alt_reset_key｜add_key` 覆盖（默认值见 `lua/snow/user_dict.lua:37-41`）。
+`pin_key` 与 `alt_reset_key` 默认不启用，哪个方案要用就在它的 custom 里配 —— **四拼不受影响**。
 `<schema_id>.fixed.txt` 是随方案的固顶表，用户词条记录则写在方案用户词典里。
 
-### 排序标记
+### 固定与调序
 
-被手动调过序/置顶的候选，注释里会追加 `↕`（由 `super_sequence/mark_symbol` 配置，配成空串即关闭）。
-与固顶的 📌 可区分：一个词若既固顶又被调序，注释显示 `📌 ↕`。
-注意两者**不能混用符号**：`snow.postpone` 靠 `comment` 里是否有 📌/📍 来判断「固定候选不后置」。
+**只有一个用户词典、只有一套标记**：`Ctrl+;` 固定、`Ctrl+p` 置顶、`Ctrl+[` `Ctrl+]` 移动、`Ctrl+l` / `Ctrl+\` 重置、`Ctrl+'` 造词、自动造词，全都写进同一个 `snow.user_dict`，由 `snow.fix` 按 index 呈现。
+
+- 📌 = 词库里本来就有这个词，被你固定到了某个位置；📍 = 自造词（词库里没有，来自 `Ctrl+'` 或自动造词）。`snow.postpone` 正是靠这两个符号认出「固定候选不后置」
+- 位置**精确到某一位**，且不随使用漂移（自动调频已关），一次调好永久有效
+- 可固定到第 18 位（`snow.MAX_INDEX`）；再往后固定不了
+- **1 码、2 码简码位也能固定与移动** —— 冰雪机制没有码长限制，这点是合并带来的净收益。若不想动简码位，别在这些码上按固定键即可；要批量改简码首选，编辑 `fixed.txt` 更省事
+- 置顶时若第 1 位已经有别的固定词，它会**顺延到最近的空位**（`user_dict.lua` 的 `occupy`），不会凭空消失
+- `Ctrl+l` / `Ctrl+\` 只是把该编码下的记录标记为隐藏，不删记录，再按 `Ctrl+;` 能固定回来
+
+呈现顺序上 `snow.fix` 在 `snow.postpone` **之前**（filters 里 fix 在第 4 位、postpone 在第 6 位），所以：
+
+- `postpone` 的退让**不会**动被固定的候选（它靠 📌/📍 判断），手动固定优先于退让 —— 关掉自动调频后要的就是「我说了算」
+- 反过来，`postpone` 记的是**它自己输出**的首位，未必是你置顶后的那个词，所以置顶过的词在长码通常不会被后置
 
 ### 其它
 
@@ -223,9 +251,10 @@
 | `snow_bihua.schema.yaml` / `snow_bushou.schema.yaml` | 冰雪附属：笔画反查库、部首反查库（供辅码） |
 | `default.custom.yaml` | 方案菜单（`snow_sipin / snow_xiaohe`） |
 | `custom_phrase.txt` | 两个方案共用的自定义短语 |
-| `lua/snow/*.lua` | 冰雪系列模块：fix（固顶）、user_dict、popping（顶功）、table_like、shape_filter/processor（辅码）、postpone、hint、statistics、datetime/number/calculator 等 |
+| `lua/snow/*.lua` | 冰雪系列模块：fix（固顶）、user_dict、auto_phrase（自动造词）、popping（顶功）、table_like、shape_filter/processor（辅码）、postpone、hint、statistics、datetime/number/calculator 等 |
 | `lua/sipin_filter.lua` | 四拼专用：大写韵母筛选（大写不进编码，故不触发顶功） |
-| `lua/sbxlm/wx_quick_symbol.lua`、`wx_sequence.lua` | 从万象移植的快符与排序模块，现由冰雪小鹤使用（原声笔系列已移除，模块名保留未改） |
+| `lua/sbxlm/wx_quick_symbol.lua` | 从万象移植的快符模块，现由冰雪小鹤使用（原声笔系列已移除，模块名保留未改） |
+| `lua/sbxlm/wx_sequence.lua` | 从万象移植的排序模块，**已停用**：无方案引用，文件保留；排序已并入冰雪固定机制 |
 
 ---
 
@@ -236,21 +265,25 @@
 | `*.custom.yaml`（键位、挂载、开关） | 不需要（但改动件后建议重新部署） | 一键回退就是删掉对应 patch 行 |
 | `<schema>.fixed.txt` | 不需要 | 方案数据文件，重新部署或切走再切回即生效 |
 | `*.schema.yaml` 的 `*_algebra` | **需要**（部署会明显变慢） | 改编码规则务必重跑音节回归验证 |
-| lua 模块 | 不需要 | 快符/排序在 `lua/sbxlm/` 下，但已无其它方案共用 |
+| lua 模块 | 不需要 | 快符在 `lua/sbxlm/` 下；`user_dict.lua` 三拼四拼共用，新增键位默认关闭，四拼零影响 |
+| 恢复万象排序 | 不需要 | 把 `wx_sequence` 两处挂载与 `super_sequence` 段加回 custom 即可；排序库 `snow_xiaohe_sequence.userdb` 一直留着没删 |
+| 关闭/恢复自动调频 | 不需要 | 只动 `snow_xiaohe.custom.yaml` 两行；旧调频数据一直留在 `snow_xiaohe.userdb` 里不删，改回即恢复 |
+| 开关自动造词 | 不需要 | `auto_phrase/enable: false` 或删掉 `engine/filters/+` 两行重新部署；已造的词仍在自有库里，用 `Ctrl+\` 隐藏 |
+| 排查造词为什么没成 | 不需要 | `auto_phrase/probe: true` 后每次上屏会把各段编码、选中文本与造词结果写进 `%TEMP%\rime.weasel\*.ERROR.*` 日志 |
 
 踩过的坑，改之前先看一眼：
 
 - `fixed.txt` 里**同一个码只能写一行**：`snow.read_dictionary` 是 `result[code] = words`，同码分两行会被后者覆盖；要多个词就写在一行里用空格分隔（如 `mas	马上 马术`）
-- `engine/processors/@before N` 的索引是**按顺序累积**的：快符 `@before 4` 插入后，key_binder 由 7 变成 8，所以排序要用 `@before 8`，且必须写在 `@before 4` 之后
-- 排序键不能用 📌/📍（会被 `postpone` 误判为固定项）
-- 简码位（1~2 码）不参与排序（`min_code_length: 3`），且排序处理器会把排序键吞掉以防穿透到系统，因此 `Ctrl+u/i` 在 1~2 码有候选时不会触发其它绑定
+- `engine/processors/@before N` 的索引是**按顺序累积**的：快符 `@before 4` 插入后，后面的下标统统 +1（key_binder 由 7 变 8），且每个 `@before` 必须写在它依赖的那一行之后。能用 `/*` 追加的（如 `engine/filters/+`）就别用下标
+- 调序/排序的标记**不能**用 📌/📍（会被 `postpone` 误判为固定项），这正是当初万象排序用 ↕ 的原因；合并后就只剩 📌/📍 这一套，没有冲突
+- 冰雪固定没有码长限制，所以 1~2 码简码位**也能**被 `Ctrl+;` / `Ctrl+p` 改掉；简码位候选多、靠肌肉记忆，别在那里顺手按固定键
 - **librime 不会为子翻译器构建棱镜**：部署只编译各方案主翻译器的 `translator/prism`，`jianpin/prism` 之类的独立名字永远不会有对应的 `.prism.bin`，翻译器会静默失效。多棱镜要么复用主棱镜，要么另建一个方案
 - **查询串里没有通配符**：音节化（`algo/syllabifier.cc`）走棱镜精确前缀匹配，`?`、`*` 都不是通配符，代理码里插了它们就必定查不到
 - **代理码被重排后，候选跨度不再与输入左对齐**：`snow.prepare` 按代理码的实码长度换算 `_start/_end`，重排过的代理（如二字词 6 码）若放行部分跨度候选，选中后会留下被重排的残余编码，容易被 `^o.*$`（表达式）之类的段接走
 - **菜单为空时顶功会彻底失效**：`popping` 顶屏前检查 `context:has_menu()`，一旦某段编码失配到没有候选，后续按键不会被任何规则顶走、只能不断追加。所以任何「失配就没有候选」的分支都要留兜底候选，否则用户只能靠 Esc/退格自救
 - **笔画库只收单字**：`bihua.codes` 对「凤玲」这类多字词整词查不到笔画（`known = false`），直接放过的话二字词/三字词的辅码就静默失效。已在 `shape_filter` 里退回首字笔画，按首字笔顺连续匹配
 - **辅码规则按长度区分，缺一段就变空菜单**：`speller/shape` 的 match 是全匹配，二字词全码 6 码之后若没有对应规则，第 7 个元音键会进 speller 变成非法长码；配合 `table_like` 兜底被 `jianpin_pattern` 表面匹配抑制，就会出现「第 7 码空、第 8 码又有」。新增长度分支时务必同时确认兜底条件
-- **三拼的二字词全码无法拆字造词**：全码是 `声₁韵₁声₂韵₂调₂调₁`，调码交错在后面，单字的码（`hca`）在输入里不连续，任何部分跨度候选都映射不回去；造词请用 5 码（不带调₁）拆字，或走缓冲造词 / `Ctrl+'` 自由加词
+- **三拼的二字词全码无法拆字造词**：全码是 `声₁韵₁声₂韵₂调₂调₁`，调码交错在后面，单字的码（`hca`）在输入里不连续，任何部分跨度候选都映射不回去。所以拆字造词只在 **4 码、5 码**成立（代理码与输入左对齐）；6 码要走 `Ctrl+j` 缓冲造词。关闭自动调频后这两条原本失效，现由 `auto_phrase.lua` 写入自有库补回（见「造词」一节）——同样的原因，**缓冲造词记的是重排后的词库码**（`yia`+`zia` → `yiziaa`），不是按键串 `yiazia`
 - **`snow.editor`（回头补码）不能照搬到三拼**：四拼的判据 `find("[声]", 2) - 1`（`lua/snow/editor.lua:57`）假设「声码集与韵码/调码不重叠」——四拼韵头韵尾调全是元音，成立。小鹤韵码占满 26 键，`g`(eng)、`c`(ao)、`k`(ing) 等**全在声码集里**，这行会把韵码当成次字声码，补码插错位置。三拼 processors 里也没挂这个处理器，`speller/editor` 那段是从四拼拷来的死配置。真要支持回头补码，得先把判据改成按方案参数化的音节长度
 - **多字词代理码不加空格会被音节化吞掉**：librime 的音节化按权重挑最优切分，纯声码串 `lthy` 被切成 `lt|hy`（lüe+hun）而不是 `l|t|h|y`，四字简拼因而查不到任何候选（三字词侥幸能出，是因为 3 音节的切法里没有更长的完整音节可选）。多字词代理码必须逐码用空格分隔；顺带一提，字数下限要用**声码个数**，不能沿用含空格的 `proxy:len()`（`l t h y` 是 7 字节，会把所有候选滤光）
 
@@ -260,5 +293,8 @@
 
 1. `snow_sipin.custom.yaml` 引用 `lua_processor@*sipin_filter` / `lua_filter@*sipin_filter`，对应模块在 `lua/sipin_filter.lua`（四拼大写韵母筛选，依赖 `lua/snow/snow.lua`），不要误删。
 2. `radical_sipin.txt` / `radical_sanpin.txt` 不在目录内，部首辅码会退化为空映射（`shape_filter` 不会报错，只是没有部首数据）。
-3. `Control+i` 在个别环境可能被识别为 Tab；若下移无效，把 `super_sequence/down` 换成别的组合键。
-4. `Control+u` 若被编辑器用于清空输入，仅在「有候选且 ≥3 码」时被排序抢占。
+3. `Ctrl+u` / `Ctrl+i` 已随万象排序一并释放，可以还给编辑器（清空行、Tab 之类）。若哪天又启用万象排序，注意 `Control+i` 在个别环境可能被识别成 Tab。
+4. 固定类按键（`Ctrl+;` `Ctrl+p` `Ctrl+[` `Ctrl+]` `Ctrl+l` `Ctrl+\`）由 `snow.user_dict` 处理器在 key_binder **之前**吞掉，所以不会被 `default.yaml` 的 `Control+p → Up`、`Control+[ → Escape` 截走；但**没有候选**时这些键会穿透回 key_binder 的原绑定。
+5. **关闭自动调频后，常用词不会自己爬到短码**：想要「`vizi` 出意志」这类确定的简码，有三种办法——直接在那个码长**拆字造词**（打 `vizi` 选「意」再选「志」，就记到 4 码上）、写进 `snow_xiaohe.fixed.txt`（固顶到该码的第 1 位）、或用 `Ctrl+p` 手动置顶。这是刻意的取舍——位置由你定，代价是要自己定一次。
+6. **固定与退让的先后**：`snow.fix` 在 `snow.postpone` 之前（filters 第 4 位 vs 第 6 位），且 postpone 靠 📌/📍 跳过固定项，所以手动固定的词在长码不会被后置（见「固定与调序」）。
+7. 万象排序 `lua/sbxlm/wx_sequence.lua` 已停用（无方案引用，文件保留）。若重新启用，它的 `SPECIAL_TAGS` 已补入 `pinyin` / `stroke` / `history`；该模块没有 `tags_match`、挂载也没加 `@tag`，新方案若新增特殊段要同步补 tag，否则反查候选会被写进排序库。

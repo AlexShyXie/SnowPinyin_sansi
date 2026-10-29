@@ -140,7 +140,7 @@ jn	叫
 jp	接
 jk	经
 jt	决
-ji	即 极
+ji	几 极
 jv	局
 jm	间 贱
 jq	久

@@ -21,6 +21,9 @@ local processor = {}
 ---@field up_key KeyEvent
 ---@field down_key KeyEvent
 ---@field reset_key KeyEvent
+---@field pin_key KeyEvent|nil
+---@field alt_reset_key KeyEvent|nil
+---@field move_unfixed boolean
 
 ---@param env UserDictEnv
 function processor.init(env)
@@ -39,7 +42,11 @@ function processor.init(env)
   env.up_key = KeyEvent("Control+bracketleft")
   env.down_key = KeyEvent("Control+bracketright")
   env.reset_key = KeyEvent("Control+backslash")
-  for _, field in ipairs({ "fix_key", "add_key", "up_key", "down_key", "reset_key" }) do
+  -- 置顶键、第二个重置键默认不启用：本模块三拼四拼共用，新键位只在需要的方案里配
+  env.pin_key = nil
+  env.alt_reset_key = nil
+  env.move_unfixed = config:get_bool("translator/move_unfixed") == true
+  for _, field in ipairs({ "fix_key", "add_key", "up_key", "down_key", "reset_key", "pin_key", "alt_reset_key" }) do
     local repr = config:get_string("translator/" .. field)
     if repr then
       ---@diagnostic disable-next-line: no-unknown
@@ -116,6 +123,10 @@ function processor.check_move(input, index, new_index, env)
     return
   end
   local candidate = segment:get_candidate_at(index - 1)
+  -- 目标位可能压根没有候选
+  if not candidate then
+    return
+  end
   if processor.is_fixed(candidate) then
     local epoch = snow.epoch()
     local word = candidate.text
@@ -150,6 +161,82 @@ function processor.get_first_available_index(env)
     end
   end
   return nil
+end
+
+---取消固定的记录值：固顶表里已有的词写 0（保留占位），自造词写 DISABLE_INDEX（隐藏）
+---@param env UserDictEnv
+---@param input string
+---@param word string
+---@return string
+function processor.unfix_value(env, input, word)
+  local found = false
+  local entries = env.dict[input] or {}
+  for _, entry in ipairs(entries) do
+    if entry == word then
+      found = true
+      break
+    end
+  end
+  return snow.format(snow.encode(snow.epoch(), found and 0 or snow.DISABLE_INDEX))
+end
+
+---把 word 写到 input 的第 index 位。该位若已被别的词占着，先把占用者挪到最小空位，
+---否则 fix 按 index 填表时两条记录会互相覆盖，占着首位的词凭空消失
+---@param env UserDictEnv
+---@param input string
+---@param index integer
+---@param word string
+---@param epoch integer
+function processor.occupy(env, input, index, word, epoch)
+  ---@type table<integer, string>
+  local holders = {}
+  local da = env.user_dict:query(input .. snow.separator)
+  for k, v in da:iter() do
+    local existing = k:match("\t(.+)$")
+    local value = snow.parse(v)
+    if existing and value then
+      local _, existing_index = snow.decode(value)
+      if existing ~= word and existing_index and existing_index > 0 then
+        holders[existing_index] = existing
+      end
+    end
+  end
+  ---@diagnostic disable-next-line: cast-local-type
+  da = nil
+  collectgarbage()
+  local holder = holders[index]
+  if holder then
+    local slot = nil
+    for i = 1, snow.MAX_INDEX do
+      if i ~= index and not holders[i] then
+        slot = i
+        break
+      end
+    end
+    -- 18 位排满时无空位可挪，只能隐藏占用者
+    local new_index = slot or snow.DISABLE_INDEX
+    env.user_dict:update(snow.key(input, holder), snow.format(snow.encode(epoch, new_index)))
+    snow.errorf("时间戳 %d：「%s」在 %s 候选 %d → %s", epoch, holder, input, index, slot and tostring(slot) or "隐藏")
+  end
+  env.user_dict:update(snow.key(input, word), snow.format(snow.encode(epoch, index)))
+end
+
+---重置该编码：所有记录置为 DISABLE_INDEX（不删记录，方便再固定回来）
+---@param env UserDictEnv
+---@param input string
+---@param epoch integer
+function processor.reset(env, input, epoch)
+  local da = env.user_dict:query(input .. snow.separator)
+  for k, v in da:iter() do
+    local _, existing_index = snow.decode(snow.parse(v) or 0)
+    if existing_index ~= snow.DISABLE_INDEX then
+      env.user_dict:update(k, snow.format(snow.encode(epoch, snow.DISABLE_INDEX)))
+    end
+  end
+  ---@diagnostic disable-next-line: cast-local-type
+  da = nil
+  collectgarbage()
+  snow.errorf("时间戳 %d：重置在 %s 的候选", epoch, input)
 end
 
 ---@param key_event KeyEvent
@@ -213,22 +300,23 @@ function processor.func(key_event, env)
     end
     local value = snow.format(snow.encode(epoch, index))
     if processor.is_fixed(candidate) then
-      local found = false
-      local entries = env.dict[input] or {}
-      for _, entry in ipairs(entries) do
-        if entry == word then
-          found = true
-          break
-        end
-      end
-      local special_index = found and 0 or snow.DISABLE_INDEX
-      value = snow.format(snow.encode(epoch, special_index))
+      value = processor.unfix_value(env, input, word)
       snow.errorf("时间戳 %d：「%s」取消 %s 候选 %d", epoch, word, input, index)
     else
       snow.errorf("时间戳 %d：「%s」固定 %s 候选 %d", epoch, word, input, index)
     end
     env.user_dict:update(key, value)
     processor.refresh_recover(context, index)
+    return snow.kAccepted
+  elseif env.pin_key and key_event:eq(env.pin_key) then -- 置顶/取消置顶
+    if processor.is_fixed(candidate) and index == 1 then
+      env.user_dict:update(key, processor.unfix_value(env, input, word))
+      snow.errorf("时间戳 %d：「%s」取消 %s 候选 1", epoch, word, input)
+    else
+      processor.occupy(env, input, 1, word, epoch)
+      snow.errorf("时间戳 %d：「%s」置顶 %s 候选 1", epoch, word, input)
+    end
+    processor.refresh_recover(context, 1)
     return snow.kAccepted
   elseif key_event:eq(env.add_key) then -- 添加新词
     local add_index = processor.get_first_available_index(env)
@@ -244,37 +332,40 @@ function processor.func(key_event, env)
     snow.errorf("准备添加新词")
     return snow.kAccepted
   elseif key_event:eq(env.up_key) then
-    if not processor.is_fixed(candidate) or index <= 1 then
+    if index <= 1 then
       return snow.kAccepted
     end
-    local value = snow.format(snow.encode(epoch, index - 1))
+    if processor.is_fixed(candidate) then
+      local value = snow.format(snow.encode(epoch, index - 1))
+      processor.check_move(input, index - 1, index, env)
+      env.user_dict:update(key, value)
+    elseif env.move_unfixed then
+      -- 没固定的候选也直接移：插到目标位，占着那位的固定项顺延到空位
+      processor.occupy(env, input, index - 1, word, epoch)
+    else
+      return snow.kAccepted
+    end
     snow.errorf("时间戳 %d：「%s」在 %s 候选 %d → %d", epoch, word, input, index, index - 1)
-    processor.check_move(input, index - 1, index, env)
-    env.user_dict:update(key, value)
     processor.refresh_recover(context, index - 1)
     return snow.kAccepted
   elseif key_event:eq(env.down_key) then
-    if not processor.is_fixed(candidate) or index >= snow.MAX_INDEX then
+    if index >= snow.MAX_INDEX then
       return snow.kAccepted
     end
-    local value = snow.format(snow.encode(epoch, index + 1))
+    if processor.is_fixed(candidate) then
+      local value = snow.format(snow.encode(epoch, index + 1))
+      processor.check_move(input, index + 1, index, env)
+      env.user_dict:update(key, value)
+    elseif env.move_unfixed then
+      processor.occupy(env, input, index + 1, word, epoch)
+    else
+      return snow.kAccepted
+    end
     snow.errorf("时间戳 %d：「%s」在 %s 候选 %d → %d", epoch, word, input, index, index + 1)
-    processor.check_move(input, index + 1, index, env)
-    env.user_dict:update(key, value)
     processor.refresh_recover(context, index + 1)
     return snow.kAccepted
-  elseif key_event:eq(env.reset_key) then
-    local da = env.user_dict:query(input .. snow.separator)
-    for k, v in da:iter() do
-      local _, existing_index = snow.decode(snow.parse(v) or 0)
-      if existing_index ~= snow.DISABLE_INDEX then
-        env.user_dict:update(k, snow.format(snow.encode(epoch, snow.DISABLE_INDEX)))
-      end
-    end
-    ---@diagnostic disable-next-line: cast-local-type
-    da = nil
-    collectgarbage()
-    snow.errorf("时间戳 %d：重置在 %s 的候选", epoch, input)
+  elseif key_event:eq(env.reset_key) or (env.alt_reset_key and key_event:eq(env.alt_reset_key)) then
+    processor.reset(env, input, epoch)
     processor.refresh_recover(context, index)
     return snow.kAccepted
   end

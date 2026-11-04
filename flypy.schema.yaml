@@ -43,7 +43,7 @@ switches:
 engine:
   processors:
     - lua_processor@*snow.statistics*processor  # 打字统计（必须第一，统计所有按键）
-    - lua_processor@*xhup/shortcut_processor
+    # - lua_processor@*xhup/shortcut_processor
     - ascii_composer
     - recognizer
     - lua_processor@*snow.user_dict           # 固顶/调序/造词（移植自冰雪）
@@ -64,7 +64,7 @@ engine:
     - table_translator                          # 码表
     - lua_translator@*xhup/date_translator      # Lua 日期
     - lua_translator@*xhup/time_translator      # Lua 时间
-    - lua_translator@*xhup/shortcut_translator  # Lua 直通车
+    # - lua_translator@*xhup/shortcut_translator  # Lua 直通车
     - reverse_lookup_translator@xhup_reverse
     - history_translator@history                # 重复上屏
     - lua_translator@*xhup/calculator_translator

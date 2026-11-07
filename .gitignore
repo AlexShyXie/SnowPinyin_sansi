@@ -5,10 +5,12 @@ data.json
 patch-log/
 .codebuddy/
 *.userdb/
-*dict.yaml
+
 build/
 snow_backup/
 rime-wanxiang-flypy-fuzhu/
 /user.yaml
 /installation.yaml
 rime-crane-main/
+*./verysync/
+*/*verysync/
